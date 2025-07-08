@@ -25,7 +25,7 @@ public:
 		LifeVector new_lifes;
 
 		for (int index = 0; index < lifes_.size(); ++index) {
-			const Life& life = lifes_[index];
+			Life& life = lifes_[index];
 			check_neighbors(life, new_lifes);
 		}
 
@@ -37,33 +37,43 @@ public:
 
 	void check_neighbors(const Life& life, LifeVector& new_lifes)
 	{
+		// 遍历所有邻居
 		for (int x = -1; x <= 1; ++x) {
 			for (int y = -1; y <= 1; ++y) {
+				// 排除自己
 				if (!((x == 0) && (y == 0))) { // skip self
-					i64 new_x = life.x() + x;
-					i64 new_y = life.y() + y;
+					Life neighbor(life.x() + x, life.y() + y);
+					// 这里需要处理多次添加问题, 如果已经添加过了, 直接跳过
+					bool exist = false;
+					for (const auto& other : new_lifes) {
+						if (other.is_me(neighbor)) {
+							exist = true;
+							break;
+						}
+					}
+					if (exist) {
+						continue;
+					}
 
-					// the life exist
-					// int count the neighbor
 					int count = 0;
 					bool is_alive = false;
-					Life new_life(new_x, new_y);
-					for (const auto& neighbor : lifes_) {
-						if (neighbor.is_me(new_x, new_y)) {
+					// 检查所有活着的对象, 看看是不是自己的邻居.
+					for (const auto& other : lifes_) {
+						if (other.is_me(life)) {
 							is_alive = true;
 						}
-						else if (new_life.is_neighbor(neighbor)) {
+						else if (neighbor.is_neighbor(other)) {
 							count += 1;
 						}
 					}
 
 					if ((count == 2) && is_alive) {
 						// alive
-						new_lifes.emplace_back(life);
+						new_lifes.emplace_back(neighbor);
 					}
 					else if (count == 3) {
 						// new life
-						new_lifes.emplace_back(Life(new_x, new_y));
+						new_lifes.emplace_back(neighbor);
 					}
 				}
 			}

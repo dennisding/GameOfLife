@@ -9,7 +9,7 @@
 class Life
 {
 public:
-	Life(i64 x, i64 y) : x_(x), y_(y)
+	Life(i64 x, i64 y) : generation_(0), x_(x), y_(y)
 	{
 
 	}
@@ -25,17 +25,18 @@ public:
 		return y_;
 	}
 
-	inline bool is_me(i64 x, i64 y) const
+	inline bool is_me(const Life& life) const
 	{
-		return (x_ == x) && (y_ == y);
+		return (x_ == life.x_) && (y_ == life.y_);
 	}
 
 	inline bool is_neighbor(const Life & other) const
 	{
-		return (std::abs( - other.x_) <= 1) && (std::abs(y_ - other.y_) <= 1);
+		return (std::abs(x_ - other.x_) <= 1) && (std::abs(y_ - other.y_) <= 1);
 	}
 
-private:
+public:
+	int generation_;
 	i64 x_;
 	i64 y_;
 };
