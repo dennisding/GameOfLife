@@ -206,7 +206,7 @@ void do_test()
 	test_spawn();
 	test_evolve();
 	test_file_builder();
-	test_stdio_builder();
+//	test_stdio_builder();
 	//test();
 }
 

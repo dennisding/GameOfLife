@@ -134,6 +134,7 @@
     <ClInclude Include="allocator.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cosmos.cpp" />
     <ClCompile Include="cosmos_builder.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
