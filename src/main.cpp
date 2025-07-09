@@ -41,13 +41,6 @@ void check_alive(Cosmos& cosmos, Life life, const char* msg)
 	}
 }
 
-//void evolve(Cosmos& cosmos, int step)
-//{
-//	for (int i = 0; i < step; ++i) {
-//		cosmos.evolve();
-//	}
-//}
-
 void test_death()
 {
 	Cosmos cosmos;

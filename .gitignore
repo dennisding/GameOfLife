@@ -1,2 +1,8 @@
 # Google App Engine generated folder
 appengine-generated/
+
+.vs
+CMakeFiles
+Build/src/*
+Build/x64/*
+Build/CMakeCache.txt
