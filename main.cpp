@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "cosmos.hpp"
+#include "cosmos_builder.hpp"
 
 void test_triangle()
 {
@@ -40,18 +41,18 @@ void check_alive(Cosmos& cosmos, Life life, const char* msg)
 	}
 }
 
-void evolve(Cosmos& cosmos, int step)
-{
-	for (int i = 0; i < step; ++i) {
-		cosmos.evolve();
-	}
-}
+//void evolve(Cosmos& cosmos, int step)
+//{
+//	for (int i = 0; i < step; ++i) {
+//		cosmos.evolve();
+//	}
+//}
 
 void test_death()
 {
 	Cosmos cosmos;
 	cosmos.add_life(0, 0);
-	evolve(cosmos, 1);
+	cosmos.evolve(1);
 
 	Cosmos result;
 	check_cosmos(cosmos, result, "test death0");
@@ -59,14 +60,14 @@ void test_death()
 	cosmos.reset();
 	cosmos.add_life(0, 0);
 	cosmos.add_life(0, 1);
-	evolve(cosmos, 1);
+	cosmos.evolve(1);
 	check_cosmos(cosmos, result, "test death1");
 
 	cosmos.reset();
 	cosmos.add_life(0, 0);
 	cosmos.add_life(1, 1);
 	cosmos.add_life(1, -1);
-	evolve(cosmos, 1);
+	cosmos.evolve(1);
 	check_alive(cosmos, Life(0, 0), "test alive2");
 
 	cosmos.reset();
@@ -76,7 +77,7 @@ void test_death()
 	cosmos.add_life(1, -1);
 	cosmos.add_life(-1, 1);
 
-	evolve(cosmos, 1);
+	cosmos.evolve(1);
 	Life new_life(0, 0);
 	check_death(cosmos, new_life, "test death5");
 //	check_cosmos(cosmos, result, "test death4");
@@ -90,7 +91,7 @@ void test_spawn()
 	cosmos.add_life(0, 0);
 	cosmos.add_life(0, 1);
 	cosmos.add_life(1, 1);
-	evolve(cosmos, 1);
+	cosmos.evolve(1);
 
 	result.add_life(0, 0);
 	result.add_life(0, 1);
@@ -99,7 +100,7 @@ void test_spawn()
 
 	check_cosmos(cosmos, result, "test spawn");
 
-	evolve(cosmos, 100);
+	cosmos.evolve(100);
 	check_cosmos(cosmos, result, "test spawn and static");
 }
 
@@ -118,7 +119,7 @@ void test_evolve()
 	cosmos.add_life(-2000000000001, -2000000000001);
 	cosmos.add_life(-2000000000000, -2000000000001);
 
-	evolve(cosmos, 1);
+	cosmos.evolve(1);
 	result.add_life(1, 0);
 	result.add_life(1, 2);
 	result.add_life(2, 1);
@@ -142,7 +143,7 @@ void test()
 	cosmos.add_life(-1, -1);
 	cosmos.add_life(0, -1);
 
-	evolve(cosmos, 1);
+	cosmos.evolve(1);
 
 	result.add_life(0, 0);
 	result.add_life(-1, -1);
@@ -152,11 +153,60 @@ void test()
 	check_cosmos(cosmos, result, "test evolve");
 }
 
+void test_file_builder()
+{
+	Cosmos cosmos;
+	Cosmos result;
+
+	CosmosFileBuilder builder("test.lif");
+	builder.build(cosmos);
+
+	cosmos.evolve(1);
+	result.add_life(1, 0);
+	result.add_life(1, 2);
+	result.add_life(2, 1);
+	result.add_life(2, 2);
+	result.add_life(3, 1);
+
+	result.add_life(-2000000000000, -2000000000000);
+	result.add_life(-2000000000001, -2000000000001);
+	result.add_life(-2000000000000, -2000000000001);
+	result.add_life(-2000000000001, -2000000000000);
+
+	check_cosmos(cosmos, result, "test file_builder");
+
+}
+
+void test_stdio_builder()
+{
+	Cosmos cosmos;
+	Cosmos result;
+
+	CosmosStdioBuilder builder;
+	builder.build(cosmos);
+
+	cosmos.evolve(1);
+	result.add_life(1, 0);
+	result.add_life(1, 2);
+	result.add_life(2, 1);
+	result.add_life(2, 2);
+	result.add_life(3, 1);
+
+	result.add_life(-2000000000000, -2000000000000);
+	result.add_life(-2000000000001, -2000000000001);
+	result.add_life(-2000000000000, -2000000000001);
+	result.add_life(-2000000000001, -2000000000000);
+
+	check_cosmos(cosmos, result, "test stdio builder");
+}
+
 void do_test()
 {
 	test_death();
 	test_spawn();
 	test_evolve();
+	test_file_builder();
+	test_stdio_builder();
 	//test();
 }
 

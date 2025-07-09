@@ -19,12 +19,13 @@ public:
 		lifes_.insert(life);
 	}
 
-	int evolve()
+	int evolve(int step = 1)
 	{
-		generation_ += 1;
+		for (int index = 0; index < step; ++index) {
+			generation_ += 1;
 
-		update_cosmos();
-
+			update_cosmos();
+		}
 		return generation_;
 	}
 

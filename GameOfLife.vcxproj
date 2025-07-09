@@ -129,10 +129,12 @@
   <ItemGroup>
     <ClInclude Include="config.hpp" />
     <ClInclude Include="cosmos.hpp" />
+    <ClInclude Include="cosmos_builder.hpp" />
     <ClInclude Include="life.hpp" />
     <ClInclude Include="allocator.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cosmos_builder.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

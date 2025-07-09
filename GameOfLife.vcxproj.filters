@@ -27,9 +27,15 @@
     <ClInclude Include="allocator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cosmos_builder.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cosmos_builder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
