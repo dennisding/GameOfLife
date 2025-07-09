@@ -1,2 +1,2 @@
 
-cmake . -B Build
+cmake . -B Build -DWEBGPU_BACKEND=WGPU -DWEBGPU_BUILD_FROM_SOURCE=OFF

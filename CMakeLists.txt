@@ -5,5 +5,5 @@ project(GameOfLife CXX)
 
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
+add_subdirectory(webgpu)
 add_subdirectory(src)
-

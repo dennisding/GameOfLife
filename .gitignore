@@ -6,3 +6,4 @@ CMakeFiles
 Build/src/*
 Build/x64/*
 Build/CMakeCache.txt
+Build/*
