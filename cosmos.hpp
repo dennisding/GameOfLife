@@ -130,10 +130,22 @@ public:
 		return true;
 	}
 
+	void reset()
+	{
+		lifes_.clear();
+		current_allocator.reset();
+		new_life_allocator.reset();
+		generation_ = 0;
+	}
+
+	bool is_alive(Life life) const
+	{
+		return lifes_.find(&life) != lifes_.end();
+	}
+
 private:
 	LifeSet lifes_;
 	LifeAllocator current_allocator;
 	LifeAllocator new_life_allocator;
-//	LifeVector lifes_;
 	int generation_;
 };
