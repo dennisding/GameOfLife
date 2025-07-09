@@ -19,11 +19,11 @@ add_executable(GameOfLife main.cpp)
 target_link_libraries(GameOfLife PRIVATE GameOfLifeLib)
 
 add_executable(GameOfLifeGui wgpu_main.cpp)
-
 target_link_libraries(GameOfLifeGui PRIVATE 
 	GameOfLifeLib 
-	game 
+	game
 	webgpu 
+	wgpu
 	glfw
 )
 target_copy_webgpu_binaries(GameOfLifeGui)
