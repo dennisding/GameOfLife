@@ -130,6 +130,7 @@
     <ClInclude Include="config.hpp" />
     <ClInclude Include="cosmos.hpp" />
     <ClInclude Include="life.hpp" />
+    <ClInclude Include="allocator.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

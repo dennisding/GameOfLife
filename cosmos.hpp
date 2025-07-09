@@ -14,78 +14,126 @@ public:
 
 	void add_life(i64 x, i64 y)
 	{
-		lifes_.emplace_back(Life(x, y));
+		Life* life = current_allocator.allocate(x, y);
+
+		lifes_.insert(life);
 	}
 
-	// tick
 	int evolve()
 	{
 		generation_ += 1;
 
-		LifeVector new_lifes;
-
-		for (int index = 0; index < lifes_.size(); ++index) {
-			Life& life = lifes_[index];
-			check_neighbors(life, new_lifes);
-		}
-
-		// 
-		new_lifes.swap(lifes_);
+		update_cosmos();
 
 		return generation_;
 	}
 
-	void check_neighbors(const Life& life, LifeVector& new_lifes)
+	void update_cosmos()
 	{
-		// 遍历所有邻居
+		LifeSet updated;
+		LifeSet new_lifes;
+
+		for (auto& life : lifes_) {
+			update_neighbors(life, updated, new_lifes);
+		}
+
+		lifes_.swap(new_lifes);
+		current_allocator.swap(new_life_allocator);
+		new_life_allocator.reset();
+	}
+
+	void update_neighbors(const Life* life, LifeSet& updated, LifeSet& new_lifes)
+	{
 		for (int x = -1; x <= 1; ++x) {
 			for (int y = -1; y <= 1; ++y) {
-				// 排除自己
-				if (!((x == 0) && (y == 0))) { // skip self
-					Life neighbor(life.x() + x, life.y() + y);
-					// 这里需要处理多次添加问题, 如果已经添加过了, 直接跳过
-					bool exist = false;
-					for (const auto& other : new_lifes) {
-						if (other.is_me(neighbor)) {
-							exist = true;
-							break;
-						}
-					}
-					if (exist) {
+				if ((x != 0) || (y != 0)) { // ignore self
+					i64 neighbor_x = life->x + x;
+					i64 neighbor_y = life->y + y;
+					
+					Life neighbor(neighbor_x, neighbor_y);
+					// already updated, continue
+					if (updated.find(&neighbor) != updated.end()) {
 						continue;
 					}
 
-					int count = 0;
-					bool is_alive = false;
-					// 检查所有活着的对象, 看看是不是自己的邻居.
-					for (const auto& other : lifes_) {
-						if (other.is_me(life)) {
-							is_alive = true;
-						}
-						else if (neighbor.is_neighbor(other)) {
-							count += 1;
-						}
-					}
+					// updated
+					updated.insert(current_allocator.allocate(&neighbor));
 
-					if ((count == 2) && is_alive) {
-						// alive
-						new_lifes.emplace_back(neighbor);
+					int count = count_neighbors(&neighbor);
+					if (count == 3) {
+						// new life 
+						new_lifes.insert(new_life_allocator.allocate(&neighbor));
 					}
-					else if (count == 3) {
-						// new life
-						new_lifes.emplace_back(neighbor);
+					else if ((count == 2) && (lifes_.find(&neighbor) != lifes_.end())) {
+						// alive
+						new_lifes.insert(new_life_allocator.allocate(&neighbor));
 					}
 				}
 			}
 		}
 	}
 
-	bool head_death()
+	// check the neighbor in the following order
+	// x00      0x0      00x
+	// x00  ->  000  ->  00x
+	// x00      0x0      00x
+	int count_neighbors(const Life* life)
+	{
+		int count = 0;
+
+		for (int index = -1; index < 2; ++index) {
+			Life bounder_life(life->x + index, life->y - 1);
+			
+			int step = 0;
+			auto life_iter = lifes_.lower_bound(&bounder_life);
+			while ((step < 3) && (life_iter != lifes_.end())) {
+				if ((*life_iter)->x != bounder_life.x) { // not in the same colum, next iter
+					break;
+				}
+				if ((*life_iter)->is_me(life)) { // it's me, do nothing
+
+				}
+				else if ((*life_iter)->is_neighbor(life)) {
+					++count;
+				}
+
+				// next iter
+				++step;
+				++life_iter;
+			}
+		}
+
+		return count;
+	}
+
+	bool heat_death()
 	{
 		return lifes_.empty();
 	}
 
+	bool operator==(const Cosmos& right) const
+	{
+		if (lifes_.size() != right.lifes_.size()) {
+			return false;
+		}
+		auto iter = lifes_.begin();
+		auto right_iter = right.lifes_.begin();
+		while (iter != lifes_.end()) {
+			if (!(**iter == **right_iter)) {
+				return false;
+			}
+			// equal size
+			++iter;
+			++right_iter;
+		}
+
+		return true;
+	}
+
 private:
-	LifeVector lifes_;
+	LifeSet lifes_;
+	LifeAllocator current_allocator;
+	LifeAllocator new_life_allocator;
+//	LifeVector lifes_;
 	int generation_;
 };
