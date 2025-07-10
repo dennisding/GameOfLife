@@ -15,7 +15,8 @@ public:
 	bool tick();
 	void finit();
 
-private:
+public:
+	// internal use
 	GLFWwindow* window_;
 };
 

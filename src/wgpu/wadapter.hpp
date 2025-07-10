@@ -13,6 +13,8 @@ public:
 
 	bool init();
 
+	inline DevicePtr get_device() { return device_; }
+
 private:
 	bool request_adapter();
 

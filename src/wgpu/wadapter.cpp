@@ -25,7 +25,7 @@ bool Adapter::init()
         return false;
     }
 
-    device_ = std::make_shared<Device>();
+    device_ = std::make_shared<Device>(instance_, adapter_);
     if (!device_->init(adapter_)) {
         return false;
     }

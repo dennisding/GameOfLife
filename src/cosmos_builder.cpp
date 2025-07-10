@@ -36,6 +36,7 @@ CosmosFileBuilder::CosmosFileBuilder(const std::string& file_name)
 
 bool CosmosFileBuilder::dump(Cosmos& cosmos)
 {
+	// to do : dump to files
 	return false;
 }
 

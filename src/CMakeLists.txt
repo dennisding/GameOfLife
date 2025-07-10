@@ -22,6 +22,7 @@ target_link_libraries(GameOfLife PRIVATE GameOfLifeLib)
 add_executable(GameOfLifeTest test_main.cpp)
 target_link_libraries(GameOfLifeTest PRIVATE GameOfLifeLib)
 
+# game of life gui
 add_executable(GameOfLifeGui wgpu_main.cpp)
 target_link_libraries(GameOfLifeGui PRIVATE 
 	GameOfLifeLib 
@@ -29,5 +30,6 @@ target_link_libraries(GameOfLifeGui PRIVATE
 	webgpu 
 	wgpu
 	glfw
+	glfw3webgpu
 )
 target_copy_webgpu_binaries(GameOfLifeGui)
