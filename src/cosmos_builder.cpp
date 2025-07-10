@@ -34,6 +34,11 @@ CosmosFileBuilder::CosmosFileBuilder(const std::string& file_name)
 	std::cout << "[file builder]" << header << std::endl;
 }
 
+bool CosmosFileBuilder::dump(Cosmos& cosmos)
+{
+	return false;
+}
+
 bool CosmosFileBuilder::new_life(i64& x, i64& y)
 {
 	if (!file_.is_open()) {
@@ -53,7 +58,19 @@ CosmosStdioBuilder::CosmosStdioBuilder()
 	std::string header;
 	std::getline(std::cin, header);
 
-	std::cout << "[stdio builder]" << header << std::endl;
+//	std::cout << "[stdio builder]" << header << std::endl;
+}
+
+bool CosmosStdioBuilder::dump(Cosmos& cosmos)
+{
+	std::cout << "#Life 1.06" << std::endl;
+
+	for (auto life : cosmos) {
+		std::cout << life->x << " " << life->y << std::endl;
+	}
+
+	std::cout << std::endl;
+	return true;
 }
 
 bool CosmosStdioBuilder::new_life(i64& x, i64& y)

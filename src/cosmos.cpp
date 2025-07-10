@@ -136,3 +136,14 @@ bool Cosmos::is_alive(Life life) const
 {
 	return lifes_.find(&life) != lifes_.end();
 }
+
+const Cosmos::Iterator Cosmos::begin() const
+{
+	return Iterator(lifes_.begin());
+}
+
+const Cosmos::Iterator Cosmos::end() const
+{
+	return Iterator(lifes_.end());
+}
+

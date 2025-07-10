@@ -11,10 +11,14 @@ bool Game::init()
 
 	// wgpu adapter
 	adapter_ = std::make_shared<Adapter>();
-	adapter_->init();
+	if (!adapter_->init()) {
+		return false;
+	}
 
 	win_ = std::make_shared<Win>();
-	win_->init(1024, 768, "Game Of Life");
+	if (!win_->init(1024, 768, "Game Of Life")) {
+		return false;
+	}
 
 	return true;
 }

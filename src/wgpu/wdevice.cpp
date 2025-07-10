@@ -1,7 +1,7 @@
 
 #include "wdevice.hpp"
 
-Device::Device()
+Device::Device() : device_(nullptr)
 {
 
 }

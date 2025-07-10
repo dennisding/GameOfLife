@@ -8,6 +8,19 @@
 class Cosmos
 {
 public:
+	class Iterator
+	{
+		LifeSet::iterator iter_;
+
+	public:
+		// inline
+		inline Iterator(LifeSet::iterator iter) : iter_(iter) {}
+		inline const Life* get_life() { return *iter_; }
+		inline bool operator!=(const Iterator other) { return iter_ != other.iter_; }
+		inline void operator++() { ++iter_; }
+		inline Life* operator*() { return *iter_; }
+	};
+public:
 	Cosmos();
 
 	void add_life(i64 x, i64 y);
@@ -16,6 +29,9 @@ public:
 	bool operator==(const Cosmos& right) const;
 	void reset();
 	bool is_alive(Life life) const;
+
+	const Iterator begin() const;
+	const Iterator end() const;
 
 private:
 	void update_cosmos();
