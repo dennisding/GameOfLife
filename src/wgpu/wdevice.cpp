@@ -126,6 +126,11 @@ WGPUCommandEncoder Device::create_command_encoder()
     return wgpuDeviceCreateCommandEncoder(device_, &encoder_desc);
 }
 
+PipeLinePtr Device::create_render_pipe_line()
+{
+    return std::make_shared<PipeLine>(this);
+}
+
 bool Device::config_surface(GLFWwindow* window)
 {
     if (surface_ != nullptr) {

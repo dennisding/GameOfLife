@@ -36,10 +36,6 @@ void CommandBuffer::submit()
 
 void CommandBuffer::sync_submit()
 {
-	//auto onQueueWorkDone = [](WGPUQueueWorkDoneStatus status, void* /* pUserData */) {
-	//	std::cout << "Queued work finished with status: " << status << std::endl;
-	//	};
-	//wgpuQueueOnSubmittedWorkDone(queue, onQueueWorkDone, nullptr /* pUserData */);
 }
 
 void CommandBuffer::release()
@@ -80,7 +76,7 @@ void RenderPassCommand::begin(TexturePtr texture)
 	color_attachment.resolveTarget = nullptr;
 	color_attachment.loadOp = WGPULoadOp_Clear;
 	color_attachment.storeOp = WGPUStoreOp_Store;
-	color_attachment.clearValue = WGPUColor{ 0.3, 0.3, 0.3, 1.0 };
+	color_attachment.clearValue = WGPUColor{ 0.83, 0.92, 0.94, 1.0 };
 
 	render_pass_encoder_ = wgpuCommandEncoderBeginRenderPass(command_encoder_, &render_pass_desc);
 }
@@ -90,6 +86,16 @@ void RenderPassCommand::end()
 	wgpuRenderPassEncoderEnd(render_pass_encoder_);
 	wgpuRenderPassEncoderRelease(render_pass_encoder_);
 	render_pass_encoder_ = nullptr;
+}
+
+void RenderPassCommand::set_pipe_line(PipeLinePtr pipe_line)
+{
+	wgpuRenderPassEncoderSetPipeline(render_pass_encoder_, pipe_line->pipe_line_);
+}
+
+void RenderPassCommand::draw(int vertex, int instance, int first_vertex, int first_instance)
+{
+	wgpuRenderPassEncoderDraw(render_pass_encoder_, vertex, instance, first_vertex, first_instance);
 }
 
 void RenderPassCommand::submit()

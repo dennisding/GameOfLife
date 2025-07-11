@@ -80,6 +80,13 @@ void Game::render()
 	auto render_pass = device_->create_render_pass_command();
 
 	render_pass->begin(device_->get_surface_texture());
+
+	// render the objects here
+	auto pipe_line = device_->create_render_pipe_line();
+	render_pass->set_pipe_line(pipe_line);
+
+	render_pass->draw(3, 1);
+
 	render_pass->end();
 	render_pass->submit();
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "wtexture.hpp"
+#include "wpipe_line.hpp"
 
 #include <webgpu/webgpu.hpp>
 
@@ -44,6 +45,8 @@ public:
 
 	void begin(TexturePtr texture);
 	void end();
+	void set_pipe_line(PipeLinePtr pipe_line);
+	void draw(int vertex, int instance = 0, int first_vertex = 0, int first_instance = 0);
 
 	void submit();
 

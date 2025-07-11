@@ -14,12 +14,12 @@ Texture::~Texture()
 void Texture::from_texture(WGPUTexture texture)
 {
 	release();
-
+	format_ = wgpuTextureGetFormat(texture);
 	// create the new texture view
 	WGPUTextureViewDescriptor view_description;
 	view_description.nextInChain = nullptr;
 	view_description.label = "Surface texture view";
-	view_description.format = wgpuTextureGetFormat(texture);
+	view_description.format = format_;
 	view_description.dimension = WGPUTextureViewDimension_2D;
 	view_description.baseMipLevel = 0;
 	view_description.mipLevelCount = 1;
@@ -40,4 +40,9 @@ void Texture::release()
 WGPUTextureView Texture::get_texture_view()
 {
 	return texture_view_;
+}
+
+WGPUTextureFormat Texture::get_format()
+{
+	return format_;
 }

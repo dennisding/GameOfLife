@@ -16,8 +16,10 @@ public:
 public:
 	// use in wgpu module
 	WGPUTextureView get_texture_view();
+	WGPUTextureFormat get_format();
 
 private:
+	WGPUTextureFormat format_;
 	WGPUTextureView texture_view_;
 };
 

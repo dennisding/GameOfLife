@@ -3,6 +3,7 @@
 #include "wtexture.hpp"
 #include "wrender_pass.hpp"
 #include "wcommand_buffer.hpp"
+#include "wpipe_line.hpp"
 
 #define WEBGPU_CPP_IMPLEMENTATION
 #include <webgpu/webgpu.hpp>
@@ -24,6 +25,7 @@ public:
 //	CommandBufferPtr create_command_buffer();
 	RenderPassCommandPtr create_render_pass_command();
 	WGPUCommandEncoder create_command_encoder();
+	PipeLinePtr create_render_pipe_line();
 
 	bool config_surface(GLFWwindow* window);
 
@@ -35,7 +37,8 @@ public:
 private:
 	WGPUDevice requestDeviceSync(WGPUAdapter adapter, WGPUDeviceDescriptor const* descriptor);
 
-private:
+public:
+	// use in mgpu
 	WGPUInstance instance_;
 	WGPUAdapter adapter_;
 	WGPUDevice device_;
