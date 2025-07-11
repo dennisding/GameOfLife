@@ -14,11 +14,14 @@ public:
 	bool init();
 
 	inline DevicePtr get_device() { return device_; }
+	WGPURequiredLimits GetRequiredLimits() const;
 
 private:
 	bool request_adapter();
+	void set_default_limits(WGPULimits& limits) const;
 
-private:
+public:
+	// use in wgpu
 	WGPUInstance instance_;
 	WGPUAdapter adapter_;
 

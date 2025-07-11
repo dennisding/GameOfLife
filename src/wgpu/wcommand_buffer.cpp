@@ -93,7 +93,13 @@ void RenderPassCommand::set_pipe_line(PipeLinePtr pipe_line)
 	wgpuRenderPassEncoderSetPipeline(render_pass_encoder_, pipe_line->pipe_line_);
 }
 
-void RenderPassCommand::draw(int vertex, int instance, int first_vertex, int first_instance)
+void RenderPassCommand::set_vertex_buffer(size_t slot, BufferPtr buffer)
+{
+	size_t size = wgpuBufferGetSize(buffer->buffer_);
+	wgpuRenderPassEncoderSetVertexBuffer(render_pass_encoder_, slot, buffer->buffer_, 0, size);
+}
+
+void RenderPassCommand::draw(size_t vertex, size_t instance, size_t first_vertex, size_t first_instance)
 {
 	wgpuRenderPassEncoderDraw(render_pass_encoder_, vertex, instance, first_vertex, first_instance);
 }

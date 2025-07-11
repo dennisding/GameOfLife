@@ -1,11 +1,12 @@
 
 #include "wdevice.hpp"
 
+#include "wtexture.hpp"
+#include "wadapter.hpp"
+
 #include <glfw3webgpu.h>
 
-#include "wtexture.hpp"
-
-Device::Device(WGPUInstance instance, WGPUAdapter adapter) 
+Device::Device(WGPUInstance instance, Adapter* adapter) 
     : instance_(instance), adapter_(adapter), 
     device_(nullptr), queue_(nullptr), surface_(nullptr)
 {
@@ -26,11 +27,13 @@ Device::~Device()
 
 bool Device::init(WGPUAdapter adapter)
 {
+    WGPURequiredLimits requiredLimits = adapter_->GetRequiredLimits();
+
     WGPUDeviceDescriptor device_desc = {};
     device_desc.nextInChain = nullptr;
     device_desc.label = "GameOfLife Device"; // anything works here, that's your call
     device_desc.requiredFeatureCount = 0; // we do not require any specific feature
-    device_desc.requiredLimits = nullptr; // we do not require any specific limit
+    device_desc.requiredLimits = &requiredLimits;
     device_desc.defaultQueue.nextInChain = nullptr;
     device_desc.defaultQueue.label = "The default queue";
     device_desc.deviceLostCallback = nullptr;
@@ -117,6 +120,13 @@ RenderPassCommandPtr Device::create_render_pass_command()
     return std::make_shared<RenderPassCommand>(this);
 }
 
+BufferPtr Device::create_buffer(size_t size)
+{
+    BufferPtr buffer = std::make_shared<Buffer>(this);
+    buffer->create(size);
+    return buffer;
+}
+
 WGPUCommandEncoder Device::create_command_encoder()
 {
     WGPUCommandEncoderDescriptor encoder_desc = {};
@@ -147,7 +157,7 @@ bool Device::config_surface(GLFWwindow* window)
     config.width = width;
     config.height = height;
 
-    config.format = wgpuSurfaceGetPreferredFormat(surface_, adapter_);;
+    config.format = wgpuSurfaceGetPreferredFormat(surface_, adapter_->adapter_);;
     config.viewFormatCount = 0;
     config.viewFormats = nullptr;
 

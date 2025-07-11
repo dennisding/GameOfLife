@@ -4,18 +4,8 @@
 
 static const char* shader_code = R"(
 @vertex
-fn vs_main(@builtin(vertex_index) in_vertex_index: u32) -> @builtin(position) vec4f {
-	var p = vec2f(0.0, 0.0);
-	if (in_vertex_index == 0u) {
-		p = vec2f(-0.5, -0.5);
-	}
-	else if (in_vertex_index == 1u) {
-		p = vec2f(0.5, -0.5);
-	}
-	else {
-		p = vec2f(0.0, 0.5);
-	}
-	return vec4f(p, 0.0, 1.0);
+fn vs_main(@location(0) in_vertex_position: vec2f) -> @builtin(position) vec4f {
+	return vec4f(in_vertex_position, 0.0, 1.0);
 }
 
 @fragment
@@ -42,14 +32,28 @@ PipeLine::PipeLine(Device* device) : device_(device)
 
 	WGPUShaderModule shaderModule = wgpuDeviceCreateShaderModule(device_->device_, &shaderDesc);
 
+	// positoin attribute
+	WGPUVertexAttribute positionAttrib;
+	positionAttrib.shaderLocation = 0;
+	positionAttrib.format = WGPUVertexFormat_Float32x2;
+	positionAttrib.offset = 0;
+
+	// vertex buffer
+	WGPUVertexBufferLayout vertexBufferLayout{};
+	vertexBufferLayout.attributeCount = 1;
+	vertexBufferLayout.attributes = &positionAttrib;
+	vertexBufferLayout.arrayStride = 2 * sizeof(float);
+	vertexBufferLayout.stepMode = WGPUVertexStepMode_Vertex;
+
 	// creat the pipe line
 	WGPURenderPipelineDescriptor pipe_line_desc;
 	pipe_line_desc.nextInChain = nullptr;
 	pipe_line_desc.label = "render pass";
 
 	pipe_line_desc.vertex.nextInChain = nullptr;
-	pipe_line_desc.vertex.bufferCount = 0;
-	pipe_line_desc.vertex.buffers = nullptr;
+	pipe_line_desc.vertex.bufferCount = 1;
+	pipe_line_desc.vertex.buffers = &vertexBufferLayout;
+
 
 	pipe_line_desc.vertex.module = shaderModule;
 	pipe_line_desc.vertex.entryPoint = "vs_main";

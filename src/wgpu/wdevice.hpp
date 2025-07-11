@@ -4,6 +4,7 @@
 #include "wrender_pass.hpp"
 #include "wcommand_buffer.hpp"
 #include "wpipe_line.hpp"
+#include "wbuffer.hpp"
 
 #define WEBGPU_CPP_IMPLEMENTATION
 #include <webgpu/webgpu.hpp>
@@ -11,10 +12,12 @@
 
 #include <memory>
 
+class Adapter;
+
 class Device : std::enable_shared_from_this<Device>
 {
 public:
-	Device(WGPUInstance instance, WGPUAdapter adapter);
+	Device(WGPUInstance instance, Adapter* adapter);
 	~Device();
 
 	bool init(WGPUAdapter adapter);
@@ -26,6 +29,7 @@ public:
 	RenderPassCommandPtr create_render_pass_command();
 	WGPUCommandEncoder create_command_encoder();
 	PipeLinePtr create_render_pipe_line();
+	BufferPtr create_buffer(size_t size);
 
 	bool config_surface(GLFWwindow* window);
 
@@ -40,7 +44,8 @@ private:
 public:
 	// use in mgpu
 	WGPUInstance instance_;
-	WGPUAdapter adapter_;
+//	WGPUAdapter adapter_;
+	Adapter* adapter_;
 	WGPUDevice device_;
 	WGPUQueue queue_;
 	WGPUSurface surface_;

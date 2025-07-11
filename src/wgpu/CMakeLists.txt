@@ -14,6 +14,8 @@ add_library(wgpu STATIC
 	wrender_pass.cpp
 	wpipe_line.hpp
 	wpipe_line.cpp
+	wbuffer.hpp
+	wbuffer.cpp
 )
 
 target_link_libraries(wgpu webgpu glfw glfw3webgpu)

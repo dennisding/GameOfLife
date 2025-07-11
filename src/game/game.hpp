@@ -3,6 +3,7 @@
 #include "win.hpp"
 #include "wgpu/wadapter.hpp"
 #include "wgpu/wrender_pass.hpp"
+#include "wgpu/wcommand_buffer.hpp"
 
 class Game
 {
@@ -19,6 +20,7 @@ public:
 private:
 	void tick_logic();
 	void render();
+	void render_world(RenderPassCommandPtr render_pass);
 
 private:
 	WinPtr win_;
