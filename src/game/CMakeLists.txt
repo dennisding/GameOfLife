@@ -12,6 +12,7 @@ add_library(game STATIC
 	rectangle.hpp rectangle.cpp
 	color.hpp color.cpp
 	position.hpp position.cpp
+	input.hpp input.cpp
 )
 
 target_link_libraries(game glfw webgpu)

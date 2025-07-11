@@ -103,3 +103,8 @@ void World::render_lifes(TriangleSet& triangles)
 			xcell_pixel - xone_pixel, ycell_pixel - yone_pixel);
 	}
 }
+
+void World::evolve()
+{
+	cosmos_.evolve();
+}

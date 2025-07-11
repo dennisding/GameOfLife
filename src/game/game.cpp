@@ -18,7 +18,7 @@ bool Game::init()
 		return false;
 	}
 
-	win_ = std::make_shared<Win>();
+	win_ = std::make_shared<Win>(this);
 	if (!win_->init(1024, 768, "Game Of Life")) {
 		return false;
 	}
@@ -42,6 +42,7 @@ void Game::run()
 void Game::pre_tick()
 {
 	device_->pre_tick();
+	win_->pre_tick();
 }
 
 bool Game::tick()

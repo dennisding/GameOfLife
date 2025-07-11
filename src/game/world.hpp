@@ -24,6 +24,8 @@ public:
 	void render_self(TriangleSet& triangles);
 	void render_lifes(TriangleSet& triangles);
 
+	void evolve();
+
 private:
 	
 private:

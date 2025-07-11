@@ -35,7 +35,8 @@ private:
 	void render_world(RenderPassCommandPtr render_pass);
 	void render_triangles(TriangleSet& triangles, float r = 0., float g = 0., float b = 0.);
 
-private:
+public:
+	// use internal
 	WinPtr win_;
 	AdapterPtr adapter_;
 	DevicePtr device_;

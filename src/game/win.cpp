@@ -1,7 +1,8 @@
 
 #include "win.hpp"
 
-Win::Win() : width_(0), height_(0), window_(nullptr)
+Win::Win(Game* game)
+	: game_(game), width_(0), height_(0), window_(nullptr)
 {
 
 }
@@ -22,7 +23,14 @@ bool Win::init(int width, int height, const std::string& title)
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 	window_ = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 
+	input_ = std::make_shared<Input>(this);
+
 	return true;
+}
+
+void Win::pre_tick()
+{
+	input_->pre_tick();
 }
 
 bool Win::tick()
