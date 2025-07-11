@@ -59,6 +59,11 @@ RenderPassCommand::RenderPassCommand(Device* device)
 	command_encoder_ = device_->create_command_encoder();
 }
 
+RenderPassCommand::~RenderPassCommand()
+{
+
+}
+
 void RenderPassCommand::begin(TexturePtr texture)
 {
 	WGPURenderPassDescriptor render_pass_desc = {};

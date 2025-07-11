@@ -43,6 +43,7 @@ class RenderPassCommand : std::enable_shared_from_this<RenderPassCommand>
 {
 public:
 	RenderPassCommand(Device* device);
+	~RenderPassCommand();
 
 	void begin(TexturePtr texture);
 	void end();
@@ -61,3 +62,4 @@ public:
 
 using CommandBufferPtr = std::shared_ptr<CommandBuffer>;
 using RenderPassCommandPtr = std::shared_ptr<RenderPassCommand>;
+

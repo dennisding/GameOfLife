@@ -25,6 +25,7 @@ public:
 
 	void add_life(i64 x, i64 y);
 	int evolve(int step = 1);
+	void capture(LifeSet& lifes, i64 x, i64 y, int range);
 	bool heat_death();
 	bool operator==(const Cosmos& right) const;
 	void reset();

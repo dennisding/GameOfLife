@@ -36,19 +36,32 @@ public:
 	{
 		return (x == right.x) && (y == right.y);
 	}
+
+	inline bool operator<(const Life& right) const
+	{
+		if (x < right.x) {
+			return true;
+		}
+		if ((x == right.x) && (y < right.y)) {
+			return true;
+		}
+
+		return false;
+	}
 };
 
 struct CompareLife
 {
 	inline bool operator()(const Life* left, const Life* right) const
 	{
-		if (left->x < right->x) {
-			return true;
-		}
-		if ((left->x == right->x) && (left->y < right->y)) {
-			return true;
-		}
-		return false;
+		return *left < *right;
+		//if (left->x < right->x) {
+		//	return true;
+		//}
+		//if ((left->x == right->x) && (left->y < right->y)) {
+		//	return true;
+		//}
+		//return false;
 	}
 };
 

@@ -100,6 +100,37 @@ int Cosmos::count_neighbors(const Life* life)
 	return count;
 }
 
+void Cosmos::capture(LifeSet& lifes, i64 x, i64 y, int range)
+{
+	i64 min_x = x - range;
+	i64 min_y = y - range;
+	i64 max_x = x + range;
+	i64 max_y = y + range;
+	// we need to deal with overflow here.
+	if (min_x > max_x) {
+		std::swap(min_x, max_x);
+	}
+	if (min_y > max_y) {
+		std::swap(min_y, max_y);
+	}
+
+	for (i64 xindex = min_x; xindex < max_x; ++xindex) {
+		Life life(xindex, min_y);
+		auto lower_bound = lifes_.lower_bound(&life);
+		while (lower_bound != lifes_.end()) {
+			if ((*lower_bound)->x != xindex) { // no more life in this colum
+				break;
+			}
+			if ((*lower_bound)->y > max_y) { // out of range in this colum
+				break;
+			}
+			// captured
+			lifes.insert(*lower_bound);
+			++lower_bound;
+		}
+	}
+}
+
 bool Cosmos::heat_death()
 {
 	return lifes_.empty();

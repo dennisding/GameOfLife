@@ -26,7 +26,17 @@ bool Game::init()
 	device_ = adapter_->get_device();
 	device_->config_surface(win_->window_);
 
+	world_ = std::make_shared<World>(this);
+	world_->init();
+
+	gui_ = std::make_shared<Gui>();
+
 	return true;
+}
+
+void Game::run()
+{
+	// frame control
 }
 
 void Game::pre_tick()
@@ -43,6 +53,7 @@ bool Game::tick()
 	pre_tick();
 
 	device_->tick();
+	world_->tick();
 
 //	tick_logic();
 	render();
@@ -77,15 +88,77 @@ void Game::tick_logic()
 
 void Game::render()
 {
-	auto render_pass = device_->create_render_pass_command();
+	auto pipe_line = device_->create_render_pipe_line();
 
+	auto render_pass = device_->create_render_pass_command();
 	render_pass->begin(device_->get_surface_texture());
 
 	// render the objects here
-	auto pipe_line = device_->create_render_pipe_line();
 	render_pass->set_pipe_line(pipe_line);
 
 	render_world(render_pass);
+
+	render_pass->end();
+	render_pass->submit();
+
+//	render_world();
+	render_lifes();
+}
+
+void Game::render_world()
+{
+	auto pipe_line = device_->create_render_pipe_line();
+
+	auto render_pass = device_->create_render_pass_command();
+	render_pass->begin(device_->get_surface_texture());
+
+	render_pass->set_pipe_line(pipe_line);
+
+	// get the triangles
+	TriangleSet triangles;
+	world_->render_self(triangles);
+
+	// do the triangles
+	size_t size = triangles.vertexs_.size() * sizeof(float);
+	auto buffer = device_->create_buffer(size);
+	buffer->write(size, triangles.vertexs_.data());
+
+	render_pass->set_vertex_buffer(0, buffer);
+	render_pass->draw(triangles.vertexs_.size()/2, 1);
+
+	render_pass->end();
+	render_pass->submit();
+}
+
+void Game::render_lifes()
+{
+	TriangleSet triangles;
+
+	world_->render_lifes(triangles);
+
+	render_triangles(triangles);
+}
+
+void Game::render_triangles(TriangleSet& triangles, float r, float g, float b)
+{
+	if (triangles.vertexs_.empty()) {
+		return;
+	}
+
+	auto pipe_line = device_->create_render_pipe_line();
+
+	auto render_pass = device_->create_render_pass_command();
+	render_pass->begin(device_->get_surface_texture());
+
+	render_pass->set_pipe_line(pipe_line);
+
+	// do the triangles
+	size_t size = triangles.vertexs_.size() * sizeof(float);
+	auto buffer = device_->create_buffer(size);
+	buffer->write(size, triangles.vertexs_.data());
+
+	render_pass->set_vertex_buffer(0, buffer);
+	render_pass->draw(triangles.vertexs_.size() / 2, 1);
 
 	render_pass->end();
 	render_pass->submit();

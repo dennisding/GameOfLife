@@ -1,7 +1,7 @@
 
 #include "win.hpp"
 
-Win::Win() : window_(nullptr)
+Win::Win() : width_(0), height_(0), window_(nullptr)
 {
 
 }
@@ -16,6 +16,8 @@ Win::~Win()
 
 bool Win::init(int width, int height, const std::string& title)
 {
+	width_ = width;
+	height_ = height;
 	glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 	window_ = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);

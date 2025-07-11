@@ -15,6 +15,13 @@ public:
 	bool tick();
 	void finit();
 
+	inline int width() { return width_;  }
+	inline int height() { return height_; }
+
+private:
+	int width_;
+	int height_;
+
 public:
 	// internal use
 	GLFWwindow* window_;
