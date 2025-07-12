@@ -192,6 +192,16 @@ void Game::on_mouse_drage(double x, double y)
 	world_->on_mouse_drage(x, y);
 }
 
+void Game::on_mouse_lfet_down(double x, double y)
+{
+	gui_->on_mouse_left_down(x, y);
+}
+
+void Game::on_mouse_lfet_up(double x, double y)
+{
+	gui_->on_mouse_left_up(x, y);
+}
+
 void Game::on_mouse_move(double x, double y)
 {
 	gui_->on_mouse_move(x, y);

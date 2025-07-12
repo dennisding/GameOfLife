@@ -4,9 +4,19 @@
 
 Gui::Gui(Game* game) : game_(game)
 {
+	// Í¼°¸ 0.95, 0.50, 0.50
+	// test button
 	ButtonPtr button = std::make_shared<Button>(10, 10, 200, 123/2);
 
-	button->set_color(Color(0.1f, 0.1f, 0.1f), Color(0.8f, 0.8f, 0.8f));
+	button->set_color(Color(0.91f, 1.0f, 0.81f), Color(0.98f, 0.89f, 0.54f), Color(0.58f, 0.88f, 0.82f));
+	buttons_.push_back(button);
+
+	button = std::make_shared<Button>(260, 10, 200, 123 / 2);
+	button->set_color(Color(0.91f, 1.0f, 0.81f), Color(0.98f, 0.89f, 0.54f), Color(0.58f, 0.88f, 0.82f));
+	buttons_.push_back(button);
+
+	button = std::make_shared<Button>(510, 10, 200, 123 / 2);
+	button->set_color(Color(0.91f, 1.0f, 0.81f), Color(0.98f, 0.89f, 0.54f), Color(0.58f, 0.88f, 0.82f));
 	buttons_.push_back(button);
 }
 
@@ -36,5 +46,19 @@ void Gui::on_mouse_move(double x, double y)
 {
 	for (auto button : buttons_) {
 		button->on_mouse_move(x, y);
+	}
+}
+
+void Gui::on_mouse_left_down(double x, double y)
+{
+	for (auto button : buttons_) {
+		button->on_mouse_left_down(x, y);
+	}
+}
+
+void Gui::on_mouse_left_up(double x, double y)
+{
+	for (auto button : buttons_) {
+		button->on_mouse_left_up(x, y);
 	}
 }

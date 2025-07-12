@@ -9,9 +9,10 @@ Button::Button(int x, int y, int width, int height)
 
 }
 
-void Button::set_color(Color normal, Color hover)
+void Button::set_color(Color normal, Color click, Color hover)
 {
 	normal_ = normal;
+	click_ = click;
 	hover_ = hover;
 }
 
@@ -31,12 +32,28 @@ bool Button::on_mouse_clicked(int x, int y)
 
 void Button::on_mouse_move(double x, double y)
 {
+	if (state_ == ButtonState::Pressed) {
+		return;
+	}
+
 	if (in_range(x, y)) {
 		state_ = ButtonState::Hover;
 	}
 	else {
 		state_ = ButtonState::None;
 	}
+}
+
+void Button::on_mouse_left_down(double x, double y)
+{
+	if (in_range(x, y)) {
+		state_ = ButtonState::Pressed;
+	}
+}
+
+void Button::on_mouse_left_up(double x, double y)
+{
+	state_ = ButtonState::None;
 }
 
 bool Button::in_range(double x, double y)
@@ -55,7 +72,10 @@ RenderSetPtr Button::get_render_set(int win_width, int win_height)
 {
 	RenderSetPtr render_set = std::make_shared<RenderSet>();
 
-	if (state_ == ButtonState::Hover) {
+	if (state_ == ButtonState::Pressed) {
+		render_set->color_ = click_;
+	}
+	else if (state_ == ButtonState::Hover) {
 		render_set->color_ = hover_;
 	}
 	else {
