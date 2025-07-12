@@ -37,6 +37,10 @@ private:
 	void render_world(RenderPassCommandPtr render_pass);
 	void render_triangles(TriangleSet& triangles, float r = 0.5, float g = 0.5, float b = 0.5, float a = 1.);
 
+private:
+	// keyboard event
+	void on_mouse_drage(double x, double y);
+
 public:
 	// use internal
 	WinPtr win_;

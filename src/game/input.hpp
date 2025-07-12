@@ -20,6 +20,9 @@ public:
 
 private:
 	KeyState mouse_button_left_;
+	KeyState mouse_button_right_;
+	double cursor_x_;
+	double cursor_y_;
 
 	Win* win_;
 };

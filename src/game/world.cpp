@@ -108,3 +108,18 @@ void World::evolve()
 {
 	cosmos_.evolve();
 }
+
+bool World::on_mouse_drage(double x, double y)
+{
+	double offsetx = x / game_->win_->width() * viewport_->width() / 2;
+	double offsety = y / game_->win_->height() * viewport_->width() / 2;
+	if (int(offsetx) == 0 && int(offsety) == 0) {
+		return false;
+	}
+
+	i64 center_x = viewport_->x() + (int)offsetx;
+	i64 center_y = viewport_->y() - (int)offsety;
+	viewport_->set_center(center_x, center_y);
+
+	return true;
+}

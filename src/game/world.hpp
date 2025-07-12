@@ -26,6 +26,9 @@ public:
 
 	void evolve();
 
+	// process event
+	bool on_mouse_drage(double x, double y);
+
 private:
 	
 private:

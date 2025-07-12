@@ -12,13 +12,8 @@ Viewport::~Viewport()
 
 }
 
-void Viewport::render_self()
+void Viewport::set_center(i64 x, i64 y)
 {
-
+	x_ = x;
+	y_ = y;
 }
-
-void Viewport::render_lifes(Cosmos& cosmos)
-{
-
-}
-

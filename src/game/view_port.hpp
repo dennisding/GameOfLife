@@ -13,12 +13,11 @@ public:
 	Viewport(i64 x, i64 y, i64 width);
 	~Viewport();
 
-	void render_self();
-	void render_lifes(Cosmos& cosmos);
-
 	inline i64 width() { return width_; }
 	inline i64 x() { return x_; }
 	inline i64 y() { return y_; }
+
+	void set_center(i64 x, i64 y);
 
 private:
 	i64 x_;

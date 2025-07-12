@@ -171,3 +171,8 @@ void Game::render_world(RenderPassCommandPtr render_pass)
 	render_pass->set_vertex_buffer(0, buffer);
 	render_pass->draw(vertexData.size() / 2, 1);
 }
+
+void Game::on_mouse_drage(double x, double y)
+{
+	world_->on_mouse_drage(x, y);
+}
