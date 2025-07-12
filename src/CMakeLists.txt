@@ -1,13 +1,11 @@
 
 add_library(GameOfLifeLib STATIC
-	cosmos.cpp
-	cosmos_builder.cpp
-
+	cosmos.hpp cosmos.cpp
+	cosmos_builder.hpp cosmos_builder.cpp
 	allocator.hpp
 	config.hpp
-	cosmos.hpp
-	cosmos_builder.hpp
 	life.hpp
+	thread_pool.hpp thread_pool.cpp
 )
 target_include_directories(GameOfLifeLib PUBLIC ${CMAKE_SOURCE_DIR}/src)
 

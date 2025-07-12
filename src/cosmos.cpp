@@ -5,9 +5,14 @@ Cosmos::Cosmos() : generation_(0)
 {
 }
 
+void Cosmos::stop()
+{
+	thread_pool_.stop_all();
+}
+
 void Cosmos::add_life(i64 x, i64 y)
 {
-	Life* life = current_allocator.allocate(x, y);
+	Life* life = current_allocator_.allocate(x, y);
 
 	lifes_.insert(life);
 }
@@ -22,49 +27,54 @@ int Cosmos::evolve(int step)
 	return generation_;
 }
 
+int Cosmos::async_evolve(int step)
+{
+	for (int index = 0; index < step; ++index) {
+		generation_ += 1;
+
+		async_update_cosmos();
+	}
+
+	return generation_;
+}
+
 void Cosmos::update_cosmos()
 {
 	LifeSet updated;
 	LifeSet new_lifes;
+	NullOwnershipHolder ownership_holder;
 
 	for (auto& life : lifes_) {
-		update_neighbors(life, updated, new_lifes);
+		update_neighbors(life, updated, new_lifes, ownership_holder);
 	}
 
 	lifes_.swap(new_lifes);
-	current_allocator.swap(new_life_allocator);
-	new_life_allocator.reset();
+	current_allocator_.swap(new_life_allocator_);
+	new_life_allocator_.reset();
 }
 
-void Cosmos::update_neighbors(const Life* life, LifeSet& updated, LifeSet& new_lifes)
+void Cosmos::async_update_cosmos()
 {
-	for (int x = -1; x <= 1; ++x) {
-		for (int y = -1; y <= 1; ++y) {
-			if ((x != 0) || (y != 0)) { // ignore self
-				i64 neighbor_x = life->x + x;
-				i64 neighbor_y = life->y + y;
+	thread_pool_.init();
+	LifeSet updated;
+	LifeSet new_lifes;
+	OwnershipHolder ownership_holder;
 
-				Life neighbor(neighbor_x, neighbor_y);
-				// already updated, continue
-				if (updated.find(&neighbor) != updated.end()) {
-					continue;
-				}
+	std::atomic<size_t> counter_(0);
 
-				// updated
-				updated.insert(current_allocator.allocate(&neighbor));
-
-				int count = count_neighbors(&neighbor);
-				if (count == 3) {
-					// new life 
-					new_lifes.insert(new_life_allocator.allocate(&neighbor));
-				}
-				else if ((count == 2) && (lifes_.find(&neighbor) != lifes_.end())) {
-					// alive
-					new_lifes.insert(new_life_allocator.allocate(&neighbor));
-				}
-			}
-		}
+	for (auto& life : lifes_) {
+		thread_pool_.add_task([&]() {
+			update_neighbors(life, updated, new_lifes, ownership_holder);
+			counter_.fetch_add(1, std::memory_order_relaxed);
+			});
 	}
+
+	// wait all task done
+	while (counter_.load(std::memory_order_acquire) != lifes_.size());
+
+	lifes_.swap(new_lifes);
+	current_allocator_.swap(new_life_allocator_);
+	new_life_allocator_.reset();
 }
 
 // check the neighbor in the following order
@@ -158,8 +168,8 @@ bool Cosmos::operator==(const Cosmos& right) const
 void Cosmos::reset()
 {
 	lifes_.clear();
-	current_allocator.reset();
-	new_life_allocator.reset();
+	current_allocator_.reset();
+	new_life_allocator_.reset();
 	generation_ = 0;
 }
 

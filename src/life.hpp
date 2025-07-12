@@ -55,13 +55,6 @@ struct CompareLife
 	inline bool operator()(const Life* left, const Life* right) const
 	{
 		return *left < *right;
-		//if (left->x < right->x) {
-		//	return true;
-		//}
-		//if ((left->x == right->x) && (left->y < right->y)) {
-		//	return true;
-		//}
-		//return false;
 	}
 };
 

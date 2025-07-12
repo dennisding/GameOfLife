@@ -29,11 +29,6 @@ void Input::pre_tick()
 		mouse_button_left_ = KeyState::Released;
 
 		bool consume = win_->game_->on_mouse_left_up(x, y);
-
-		// trigger a event
-		//if (!consume) {
-		//	win_->game_->world_->evolve();
-		//}
 	}
 
 	// process the right button

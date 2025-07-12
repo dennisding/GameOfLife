@@ -30,6 +30,11 @@ void World::init()
 	cosmos_.add_life(2, 2);
 }
 
+void World::finit()
+{
+	cosmos_.stop();
+}
+
 void World::tick()
 {
 	if (!auto_evolve_) {
@@ -41,7 +46,8 @@ void World::tick()
 	const double fps = 5;
 	if (duration >= std::chrono::milliseconds(int(1.0/fps*1000)) ){
 		// need evolve 
-		cosmos_.evolve();
+//		cosmos_.evolve();
+		cosmos_.async_evolve();
 		last_evolve_time_ = std::chrono::high_resolution_clock::now();
 	}
 }

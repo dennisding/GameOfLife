@@ -18,6 +18,7 @@ public:
 	~World();
 
 	void init();
+	void finit();
 	
 	void tick();
 	void render(RenderPassCommandPtr render_pass);

@@ -83,6 +83,8 @@ void Game::finit()
 	win_->finit();
 	win_ = nullptr;
 
+	world_->finit();
+
 	adapter_ = nullptr;
 }
 
