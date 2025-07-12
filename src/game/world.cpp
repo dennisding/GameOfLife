@@ -8,6 +8,7 @@
 
 World::World(Game* game) : game_(game)
 {
+	auto_evolve_ = false;
 }
 
 World::~World()
@@ -20,20 +21,29 @@ void World::init()
 	// make a 10x10 viewport
 	viewport_ = std::make_shared<Viewport>(0, 0, 40);
 
-//	cosmos_.add_life(0, -1);
-	cosmos_.add_life(0, 0);
-	//cosmos_.add_life(0, 1);
-	//cosmos_.add_life(1, 2);
-	//cosmos_.add_life(2, 0);
-	//cosmos_.add_life(2, 1);
-	//cosmos_.add_life(2, 2);
+	// cosmos_.add_life(0, -1);
+	// cosmos_.add_life(0, 0);
+	cosmos_.add_life(0, 1);
+	cosmos_.add_life(1, 2);
+	cosmos_.add_life(2, 0);
+	cosmos_.add_life(2, 1);
+	cosmos_.add_life(2, 2);
 }
 
 void World::tick()
 {
-//	std::count << "world tick" << std::end;
+	if (!auto_evolve_) {
+		return;
+	}
 
-//	cosmos_.evolve();
+	auto duration = std::chrono::high_resolution_clock::now() - last_evolve_time_;
+	// about 5 frame per second
+	const double fps = 5;
+	if (duration >= std::chrono::milliseconds(int(1.0/fps*1000)) ){
+		// need evolve 
+		cosmos_.evolve();
+		last_evolve_time_ = std::chrono::high_resolution_clock::now();
+	}
 }
 
 void World::render(RenderPassCommandPtr render_pass)
@@ -45,25 +55,25 @@ void World::render(RenderPassCommandPtr render_pass)
 void World::render_self(TriangleSet& triangles)
 {
 	WinPtr win = game_->get_win();
-	float win_width = (float)win->width();
-	float win_height = (float)win->height();
+	double win_width = win->width();
+	double win_height = win->height();
 
-	float viewport_width = (float)viewport_->width();
-	float xoffset = -viewport_width / 2;
-	float yoffset = -viewport_width / 2;
+	double viewport_width = (float)viewport_->width();
+	double xoffset = -viewport_width / 2;
+	double yoffset = -viewport_width / 2;
 
-	float xcell_pixel = (win_width / viewport_width)/win_width * 2.0;
+	double xcell_pixel = (win_width / viewport_width)/win_width * 2.0;
 	
-	float xyratio = win_width / win_height;
-	float ycell_pixel = xcell_pixel * xyratio;
-	
-	float xone_pixel = 2.0 / win_width;
-	float yone_pixel = 2.0 / win_height;
+	double xyratio = win_width / win_height;
+	double ycell_pixel = xcell_pixel * xyratio;
+
+	double xone_pixel = 2.0 / win_width;
+	double yone_pixel = 2.0 / win_height;
 	// 需要做视口变换
 	for (int x = 0; x < viewport_width; ++x) {
 		for (int y = 0; y < viewport_width; ++y) {
-			triangles.add_rectangle((x + xoffset) * xcell_pixel, (y + yoffset) * ycell_pixel, 
-				xcell_pixel - xone_pixel, ycell_pixel - yone_pixel);
+			triangles.add_rectangle(float((x + xoffset) * xcell_pixel), float((y + yoffset) * ycell_pixel), 
+				float(xcell_pixel - xone_pixel), float(ycell_pixel - yone_pixel));
 		}
 	}
 
@@ -75,34 +85,34 @@ void World::render_lifes(TriangleSet& triangles)
 	LifeSet lifes;
 	i64 viewport_x = viewport_->x();
 	i64 viewport_y = viewport_->y();
-	int range = viewport_->width() / 2;
+	int range = int(viewport_->width() / 2);
 
 	cosmos_.capture(lifes, viewport_x, viewport_y, range);
 
 	WinPtr win = game_->get_win();
-	float win_width = win->width();
-	float win_height = win->height();
+	double win_width = win->width();
+	double win_height = win->height();
 
-	float viewport_width = viewport_->width();
-	float xoffset = -viewport_width / 2;
-	float yoffset = -viewport_width / 2;
+	double viewport_width = (float)viewport_->width();
+	double xoffset = -viewport_width / 2;
+	double yoffset = -viewport_width / 2;
 
-	float xcell_pixel = (win_width / viewport_width) / win_width * 2.0;
+	double xcell_pixel = (win_width / viewport_width) / win_width * 2.0;
 
-	float xyratio = win_width / win_height;
-	float ycell_pixel = xcell_pixel * xyratio;
+	double xyratio = win_width / win_height;
+	double ycell_pixel = xcell_pixel * xyratio;
 
-	float xone_pixel = 2.0 / win_width;
-	float yone_pixel = 2.0 / win_height;
+	double xone_pixel = 2.0 / win_width;
+	double yone_pixel = 2.0 / win_height;
 
 //	TriangleSet triangles;
 	for (auto life : lifes) {
 		// 
-		i64 x = life->x - viewport_x + viewport_width/2;
-		i64 y = life->y - viewport_y + viewport_width / 2;
+		i64 x = life->x - viewport_x + int(viewport_width/2);
+		i64 y = life->y - viewport_y + int(viewport_width / 2);
 
-		triangles.add_rectangle((x + xoffset) * xcell_pixel, (y + yoffset) * ycell_pixel,
-			xcell_pixel - xone_pixel, ycell_pixel - yone_pixel);
+		triangles.add_rectangle(float((x + xoffset) * xcell_pixel), float((y + yoffset) * ycell_pixel),
+			float(xcell_pixel - xone_pixel), float(ycell_pixel - yone_pixel));
 	}
 }
 
@@ -139,4 +149,10 @@ bool World::on_mouse_drage(double x, double y)
 	viewport_->set_center(center_x, center_y);
 
 	return true;
+}
+
+void World::auto_evolve()
+{
+	auto_evolve_ = true;
+	last_evolve_time_ = std::chrono::high_resolution_clock::now();
 }

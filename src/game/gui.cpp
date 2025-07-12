@@ -6,24 +6,34 @@ Gui::Gui(Game* game) : game_(game)
 {
 	// Í¼°¸ 0.95, 0.50, 0.50
 	// test button
-	ButtonPtr button = std::make_shared<Button>(10, 10, 200, 123/2);
-
+	
 	// button 1
-	button->set_color(Color(0.91f, 1.0f, 0.81f), Color(0.98f, 0.89f, 0.54f), Color(0.58f, 0.88f, 0.82f));
+	ButtonPtr button = std::make_shared<Button>(1, 10, 10, 200, 123 / 2);
 	buttons_.push_back(button);
+	button->set_color(Color(0.91f, 1.0f, 0.81f), Color(0.98f, 0.89f, 0.54f), Color(0.58f, 0.88f, 0.82f));
+	// button event
 	button->on_click_event_ = [game]() {
 		game->world_->evolve();
 		};
 
 	// button 2
-	button = std::make_shared<Button>(260, 10, 200, 123 / 2);
-	button->set_color(Color(0.91f, 1.0f, 0.81f), Color(0.98f, 0.89f, 0.54f), Color(0.58f, 0.88f, 0.82f));
+	button = std::make_shared<Button>(2, 260, 10, 200, 123 / 2);
 	buttons_.push_back(button);
+	button->set_color(Color(0.91f, 1.0f, 0.81f), Color(0.98f, 0.89f, 0.54f), Color(0.58f, 0.88f, 0.82f));
+	// button 2 event
+	button->on_click_event_ = [game]() {
+		game->world_->auto_evolve();
+		};
 
 	// button 3
-	button = std::make_shared<Button>(510, 10, 200, 123 / 2);
-	button->set_color(Color(0.91f, 1.0f, 0.81f), Color(0.98f, 0.89f, 0.54f), Color(0.58f, 0.88f, 0.82f));
+	button = std::make_shared<Button>(3, 510, 10, 200, 123 / 2);
 	buttons_.push_back(button);
+	button->set_color(Color(0.91f, 1.0f, 0.81f), Color(0.98f, 0.89f, 0.54f), Color(0.58f, 0.88f, 0.82f));
+
+	// button 2 event
+	button->on_click_event_ = [game]() {
+		game->world_->pause_evolve();
+		};
 }
 
 void Gui::tick()

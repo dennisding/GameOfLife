@@ -3,8 +3,8 @@
 
 #include <iostream>
 
-Button::Button(int x, int y, int width, int height)
-	: x_(x), y_(y), width_(width), height_(height), state_(ButtonState::None)
+Button::Button(int id, int x, int y, int width, int height)
+	: id_(id), x_(x), y_(y), width_(width), height_(height), state_(ButtonState::None)
 {
 
 }
@@ -91,10 +91,30 @@ RenderSetPtr Button::get_render_set(int win_width, int win_height)
 		render_set->color_ = normal_;
 	}
 	
-	float xratio = 2.0f / win_width;
-	float yratio = 2.0f / win_height;
+	double xratio = 2.0f / win_width;
+	double yratio = 2.0f / win_height;
 	
-	render_set->triangles_.add_rectangle(x_*xratio - 1.0, y_ * yratio - 1.0, width_*xratio, height_*yratio);
+	render_set->triangles_.add_rectangle(float(x_*xratio - 1.0), 
+		float(y_ * yratio - 1.0), float(width_*xratio), float(height_*yratio));
+
+	return render_set;
+}
+
+RenderSetPtr Button::get_icon_render_set()
+{
+	RenderSetPtr render_set = std::make_shared<RenderSet>();
+	render_set->color_ = Color(0.95f, 0.50f, 0.50f);
+	// Color icon_color = Color(0.95f, 0.50f, 0.50f);
+	// hardcode now
+	if (id_ == 1) {
+		// step evolve
+	}
+	else if (id_ == 2) {
+
+	}
+	else {
+
+	}
 
 	return render_set;
 }

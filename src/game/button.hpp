@@ -19,7 +19,7 @@ enum class ButtonState
 class Button : std::enable_shared_from_this<Button>
 {
 public:
-	Button(int x, int y, int width, int height);
+	Button(int id, int x, int y, int width, int height);
 
 	void set_color(Color normal, Color click, Color hover);
 
@@ -29,12 +29,15 @@ public:
 	bool on_mouse_left_up(double x, double y);
 
 	RenderSetPtr get_render_set(int win_width, int win_height);
+	RenderSetPtr get_icon_render_set();
+	inline void set_image(RenderSetPtr render_set) { image_ = render_set; }
 
 private:
 	bool in_range(double x, double y);
 
 public:
 	// internal use
+	int id_;
 	int x_;
 	int y_;
 	int width_;
@@ -44,6 +47,7 @@ public:
 	Color hover_;
 	ButtonState state_;
 	std::function<void()> on_click_event_;
+	RenderSetPtr image_;
 };
 
 using ButtonPtr = std::shared_ptr<Button>;

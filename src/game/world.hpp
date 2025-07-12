@@ -6,7 +6,7 @@
 #include "rectangle.hpp"
 #include "wgpu/wcommand_buffer.hpp"
 
-
+#include <chrono>
 #include <memory>
 
 class Game;
@@ -30,12 +30,17 @@ public:
 	// process event
 	bool on_mouse_drage(double x, double y);
 
+	void auto_evolve();
+	inline void pause_evolve() { auto_evolve_ = false; }
+
 private:
 	
 private:
 	Game* game_;
 	Cosmos cosmos_;
 	ViewportPtr viewport_;
+	bool auto_evolve_;
+	std::chrono::high_resolution_clock::time_point last_evolve_time_;
 };
 
 using WorldPtr = std::shared_ptr<World>;
