@@ -51,9 +51,18 @@ void Button::on_mouse_left_down(double x, double y)
 	}
 }
 
-void Button::on_mouse_left_up(double x, double y)
+bool Button::on_mouse_left_up(double x, double y)
 {
 	state_ = ButtonState::None;
+	if (in_range(x, y)) {
+		// trigger the click event
+		if (on_click_event_) {
+			on_click_event_();
+		}
+		return true;
+	}
+
+	return false;
 }
 
 bool Button::in_range(double x, double y)

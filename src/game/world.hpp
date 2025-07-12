@@ -25,6 +25,7 @@ public:
 	void render_lifes(TriangleSet& triangles);
 
 	void evolve();
+	void add_life(double x, double y);
 
 	// process event
 	bool on_mouse_drage(double x, double y);

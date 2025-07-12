@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <memory>
+#include <functional>
 
 #include "color.hpp"
 #include "render_set.hpp"
@@ -25,14 +26,15 @@ public:
 	bool on_mouse_clicked(int x, int y);
 	void on_mouse_move(double x, double y);
 	void on_mouse_left_down(double x, double y);
-	void on_mouse_left_up(double x, double y);
+	bool on_mouse_left_up(double x, double y);
 
 	RenderSetPtr get_render_set(int win_width, int win_height);
 
 private:
 	bool in_range(double x, double y);
 
-private:
+public:
+	// internal use
 	int x_;
 	int y_;
 	int width_;
@@ -41,6 +43,7 @@ private:
 	Color click_;
 	Color hover_;
 	ButtonState state_;
+	std::function<void()> on_click_event_;
 };
 
 using ButtonPtr = std::shared_ptr<Button>;

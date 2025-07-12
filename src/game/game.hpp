@@ -43,8 +43,8 @@ public:
 	// keyboard event
 	void on_mouse_drage(double x, double y);
 	void on_mouse_move(double x, double y);
-	void on_mouse_lfet_down(double x, double y);
-	void on_mouse_lfet_up(double x, double y);
+	void on_mouse_left_down(double x, double y);
+	bool on_mouse_left_up(double x, double y);
 
 public:
 	// use internal

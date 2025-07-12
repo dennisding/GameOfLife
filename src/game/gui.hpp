@@ -17,7 +17,7 @@ public:
 	bool on_mouse_click(int x, int y);
 	void on_mouse_move(double x, double y);
 	void on_mouse_left_down(double x, double y);
-	void on_mouse_left_up(double x, double y);
+	bool on_mouse_left_up(double x, double y);
 
 	void render(RenderSetVector& render_sets, int win_width, int win_height);
 

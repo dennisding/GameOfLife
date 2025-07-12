@@ -20,11 +20,13 @@ void World::init()
 	// make a 10x10 viewport
 	viewport_ = std::make_shared<Viewport>(0, 0, 40);
 
-	cosmos_.add_life(0, 1);
-	cosmos_.add_life(1, 2);
-	cosmos_.add_life(2, 0);
-	cosmos_.add_life(2, 1);
-	cosmos_.add_life(2, 2);
+//	cosmos_.add_life(0, -1);
+	cosmos_.add_life(0, 0);
+	//cosmos_.add_life(0, 1);
+	//cosmos_.add_life(1, 2);
+	//cosmos_.add_life(2, 0);
+	//cosmos_.add_life(2, 1);
+	//cosmos_.add_life(2, 2);
 }
 
 void World::tick()
@@ -107,6 +109,21 @@ void World::render_lifes(TriangleSet& triangles)
 void World::evolve()
 {
 	cosmos_.evolve();
+}
+
+void World::add_life(double x, double y)
+{
+	double win_width = game_->win_->width();
+	double win_height = game_->win_->height();
+
+	double cell_pixel = game_->win_->width() / (double)viewport_->width();
+	double xoffset = x / cell_pixel;
+	double yoffset = y / cell_pixel + (win_width - win_height)/2.0/cell_pixel;
+
+	i64 life_x = i64(std::floor(viewport_->x() - viewport_->width() / 2.0 + xoffset));
+	i64 life_y = i64(std::floor(viewport_->y() - viewport_->width() / 2.0 + yoffset));
+
+	cosmos_.add_life(life_x, life_y);
 }
 
 bool World::on_mouse_drage(double x, double y)

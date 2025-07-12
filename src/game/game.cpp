@@ -100,7 +100,7 @@ void Game::render()
 	// clear the surface
 	TriangleSet triangles;
 	triangles.add_rectangle(-1, -1, 2, 2);
-	render_triangles(triangles, 0.83, 0.92, 0.94, 1.0);
+	render_triangles(triangles, 0.83f, 0.92f, 0.94f, 1.0f);
 
 	render_world();
 	render_lifes();
@@ -112,7 +112,7 @@ void Game::render_world()
 	TriangleSet triangles;
 	world_->render_self(triangles);
 
-	render_triangles(triangles, 0.7, 0.7, 0.7, 1.0);
+	render_triangles(triangles, 0.7f, 0.7f, 0.7f, 1.0f);
 }
 
 void Game::render_lifes()
@@ -121,7 +121,7 @@ void Game::render_lifes()
 
 	world_->render_lifes(triangles);
 
-	render_triangles(triangles, 0.0, 0.4, 1.0, 1.0);
+	render_triangles(triangles, 0.0f, 0.4f, 1.0f, 1.0f);
 }
 
 void Game::render_gui()
@@ -165,41 +165,23 @@ void Game::render_triangles(TriangleSet& triangles, float r, float g, float b, f
 	render_pass->submit();
 }
 
-//void Game::render_world(RenderPassCommandPtr render_pass)
-//{
-//	std::vector<float> vertexData = {
-//		// Define a first triangle:
-//		-0.5, -0.5,
-//		+0.5, -0.5,
-//		+0.0, +0.5,
-//
-//		// Add a second triangle:
-//		-0.55f, -0.5,
-//		-0.05f, +0.5,
-//		-0.55f, +0.5
-//	};
-//
-//	size_t size = vertexData.size() * sizeof(float);
-//	static auto buffer = device_->create_buffer(size);
-//
-//	buffer->write(size, vertexData.data());
-//	render_pass->set_vertex_buffer(0, buffer);
-//	render_pass->draw(vertexData.size() / 2, 1);
-//}
-
 void Game::on_mouse_drage(double x, double y)
 {
 	world_->on_mouse_drage(x, y);
 }
 
-void Game::on_mouse_lfet_down(double x, double y)
+void Game::on_mouse_left_down(double x, double y)
 {
 	gui_->on_mouse_left_down(x, y);
 }
 
-void Game::on_mouse_lfet_up(double x, double y)
+bool Game::on_mouse_left_up(double x, double y)
 {
-	gui_->on_mouse_left_up(x, y);
+	bool consume = gui_->on_mouse_left_up(x, y);
+	if (!consume) {
+		world_->add_life(x, y);
+	}
+	return consume;
 }
 
 void Game::on_mouse_move(double x, double y)

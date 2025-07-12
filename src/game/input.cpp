@@ -23,15 +23,17 @@ void Input::pre_tick()
 	int state = glfwGetMouseButton(win_->window_, GLFW_MOUSE_BUTTON_LEFT);
 	if (state == GLFW_PRESS) {
 		mouse_button_left_ = KeyState::Pressed;
-		win_->game_->on_mouse_lfet_down(x, y);
+		win_->game_->on_mouse_left_down(x, y);
 	}
 	else if (mouse_button_left_ == KeyState::Pressed && state == GLFW_RELEASE) {
 		mouse_button_left_ = KeyState::Released;
 
-		win_->game_->on_mouse_lfet_up(x, y);
+		bool consume = win_->game_->on_mouse_left_up(x, y);
 
 		// trigger a event
-		win_->game_->world_->evolve();
+		//if (!consume) {
+		//	win_->game_->world_->evolve();
+		//}
 	}
 
 	// process the right button
@@ -55,7 +57,6 @@ void Input::pre_tick()
 		mouse_button_right_ = KeyState::Released;
 	}
 
-	// move move event
+	// mouse move event
 	win_->game_->on_mouse_move(x, y);
-//	std::cout << "cursor:" << x << ", " << y << std::endl;
 }
