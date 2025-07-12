@@ -34,12 +34,15 @@ private:
 	void render();
 	void render_world();
 	void render_lifes();
-	void render_world(RenderPassCommandPtr render_pass);
+	void render_gui();
+
+//	void render_world(RenderPassCommandPtr render_pass);
 	void render_triangles(TriangleSet& triangles, float r = 0.5, float g = 0.5, float b = 0.5, float a = 1.);
 
-private:
+public:
 	// keyboard event
 	void on_mouse_drage(double x, double y);
+	void on_mouse_move(double x, double y);
 
 public:
 	// use internal

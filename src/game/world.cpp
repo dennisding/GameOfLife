@@ -111,8 +111,8 @@ void World::evolve()
 
 bool World::on_mouse_drage(double x, double y)
 {
-	double offsetx = x / game_->win_->width() * viewport_->width() / 2;
-	double offsety = y / game_->win_->height() * viewport_->width() / 2;
+	double offsetx = x / game_->win_->width() * viewport_->width() / 1;
+	double offsety = y / game_->win_->height() * viewport_->width() / 1;
 	if (int(offsetx) == 0 && int(offsety) == 0) {
 		return false;
 	}

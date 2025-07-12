@@ -1,5 +1,6 @@
 
 #include "game.hpp"
+#include "render_set.hpp"
 
 #include <chrono>
 #include <thread>
@@ -36,7 +37,7 @@ bool Game::init()
 	world_ = std::make_shared<World>(this);
 	world_->init();
 
-	gui_ = std::make_shared<Gui>();
+	gui_ = std::make_shared<Gui>(this);
 
 	return true;
 }
@@ -96,12 +97,14 @@ void Game::tick_logic()
 
 void Game::render()
 {
+	// clear the surface
 	TriangleSet triangles;
 	triangles.add_rectangle(-1, -1, 2, 2);
 	render_triangles(triangles, 0.83, 0.92, 0.94, 1.0);
 
 	render_world();
 	render_lifes();
+	render_gui();
 }
 
 void Game::render_world()
@@ -119,6 +122,18 @@ void Game::render_lifes()
 	world_->render_lifes(triangles);
 
 	render_triangles(triangles, 0.0, 0.4, 1.0, 1.0);
+}
+
+void Game::render_gui()
+{
+	RenderSetVector render_sets;
+	
+	gui_->render(render_sets, win_->width(), win_->height());
+
+	for (auto render_set : render_sets) {
+		auto color = render_set->color_;
+		render_triangles(render_set->triangles_, color.x, color.y, color.z, 1.0);
+	}
 }
 
 void Game::render_triangles(TriangleSet& triangles, float r, float g, float b, float a)
@@ -150,29 +165,34 @@ void Game::render_triangles(TriangleSet& triangles, float r, float g, float b, f
 	render_pass->submit();
 }
 
-void Game::render_world(RenderPassCommandPtr render_pass)
-{
-	std::vector<float> vertexData = {
-		// Define a first triangle:
-		-0.5, -0.5,
-		+0.5, -0.5,
-		+0.0, +0.5,
-
-		// Add a second triangle:
-		-0.55f, -0.5,
-		-0.05f, +0.5,
-		-0.55f, +0.5
-	};
-
-	size_t size = vertexData.size() * sizeof(float);
-	static auto buffer = device_->create_buffer(size);
-
-	buffer->write(size, vertexData.data());
-	render_pass->set_vertex_buffer(0, buffer);
-	render_pass->draw(vertexData.size() / 2, 1);
-}
+//void Game::render_world(RenderPassCommandPtr render_pass)
+//{
+//	std::vector<float> vertexData = {
+//		// Define a first triangle:
+//		-0.5, -0.5,
+//		+0.5, -0.5,
+//		+0.0, +0.5,
+//
+//		// Add a second triangle:
+//		-0.55f, -0.5,
+//		-0.05f, +0.5,
+//		-0.55f, +0.5
+//	};
+//
+//	size_t size = vertexData.size() * sizeof(float);
+//	static auto buffer = device_->create_buffer(size);
+//
+//	buffer->write(size, vertexData.data());
+//	render_pass->set_vertex_buffer(0, buffer);
+//	render_pass->draw(vertexData.size() / 2, 1);
+//}
 
 void Game::on_mouse_drage(double x, double y)
 {
 	world_->on_mouse_drage(x, y);
+}
+
+void Game::on_mouse_move(double x, double y)
+{
+	gui_->on_mouse_move(x, y);
 }

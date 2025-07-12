@@ -4,7 +4,8 @@
 #include "game.hpp"
 
 
-Input::Input(Win* win) : win_(win), cursor_x_(0), cursor_y_(0)
+Input::Input(Win* win) 
+	: win_(win), cursor_x_(0), cursor_y_(0), scroll_x_(0), scroll_y_(0)
 {
 	mouse_button_left_ = KeyState::None;
 
@@ -13,14 +14,16 @@ Input::Input(Win* win) : win_(win), cursor_x_(0), cursor_y_(0)
 
 void Input::pre_tick()
 {
+
 	int state = glfwGetMouseButton(win_->window_, GLFW_MOUSE_BUTTON_LEFT);
 	if (state == GLFW_PRESS) {
 		mouse_button_left_ = KeyState::Pressed;
 	}
 	else if (mouse_button_left_ == KeyState::Pressed && state == GLFW_RELEASE) {
+		mouse_button_left_ = KeyState::Released;
+
 		// trigger a event
 		win_->game_->world_->evolve();
-		mouse_button_left_ = KeyState::Released;
 	}
 
 	// process the right button
@@ -44,4 +47,11 @@ void Input::pre_tick()
 	else {
 		mouse_button_right_ = KeyState::Released;
 	}
+
+	double x, y;
+	glfwGetCursorPos(win_->window_, &x, &y);
+
+	// move move event
+	y = win_->height() - y;
+	win_->game_->on_mouse_move(x, y);
 }

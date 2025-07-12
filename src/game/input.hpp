@@ -23,6 +23,8 @@ private:
 	KeyState mouse_button_right_;
 	double cursor_x_;
 	double cursor_y_;
+	double scroll_x_;
+	double scroll_y_;
 
 	Win* win_;
 };
