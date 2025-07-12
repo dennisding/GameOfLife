@@ -5,6 +5,7 @@
 #include "wcommand_buffer.hpp"
 #include "wpipe_line.hpp"
 #include "wbuffer.hpp"
+#include "wpipe_line_layout.hpp"
 
 #define WEBGPU_CPP_IMPLEMENTATION
 #include <webgpu/webgpu.hpp>
@@ -28,8 +29,14 @@ public:
 //	CommandBufferPtr create_command_buffer();
 	RenderPassCommandPtr create_render_pass_command();
 	WGPUCommandEncoder create_command_encoder();
-	PipeLinePtr create_render_pipe_line();
+
+	// pipe line relative
+	PipeLinePtr create_render_pipe_line(PipeLineLayoutPtr layout);
+	PipeLineLayoutPtr create_pipe_line_layout();
+
+	// buffer relative
 	BufferPtr create_buffer(size_t size);
+	BufferPtr create_uniform_buffer(size_t size);
 
 	bool config_surface(GLFWwindow* window);
 

@@ -26,6 +26,19 @@ void Buffer::create(size_t size)
 	buffer_ = wgpuDeviceCreateBuffer(device_->device_, &bufferDesc);
 }
 
+void Buffer::create_uniform(size_t size)
+{
+	release();
+
+	WGPUBufferDescriptor bufferDesc = {};
+	bufferDesc.nextInChain = nullptr;
+	bufferDesc.label = "data buffer";
+	bufferDesc.usage = WGPUBufferUsage_CopyDst | WGPUBufferUsage_Uniform;
+	bufferDesc.size = size;
+	bufferDesc.mappedAtCreation = false;
+	buffer_ = wgpuDeviceCreateBuffer(device_->device_, &bufferDesc);
+}
+
 void Buffer::write(size_t size, void* data)
 {
 	wgpuQueueWriteBuffer(device_->queue_, buffer_, 0, data, size);

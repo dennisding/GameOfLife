@@ -127,6 +127,14 @@ BufferPtr Device::create_buffer(size_t size)
     return buffer;
 }
 
+BufferPtr Device::create_uniform_buffer(size_t size)
+{
+    BufferPtr buffer = std::make_shared<Buffer>(this);
+    buffer->create_uniform(size);
+
+    return buffer;
+}
+
 WGPUCommandEncoder Device::create_command_encoder()
 {
     WGPUCommandEncoderDescriptor encoder_desc = {};
@@ -136,9 +144,16 @@ WGPUCommandEncoder Device::create_command_encoder()
     return wgpuDeviceCreateCommandEncoder(device_, &encoder_desc);
 }
 
-PipeLinePtr Device::create_render_pipe_line()
+PipeLinePtr Device::create_render_pipe_line(PipeLineLayoutPtr pipe_layout)
 {
-    return std::make_shared<PipeLine>(this);
+    auto pipe_line = std::make_shared<PipeLine>(this);
+    pipe_line->create(this, pipe_layout);
+    return pipe_line;
+}
+
+PipeLineLayoutPtr Device::create_pipe_line_layout()
+{
+    return std::make_shared<PipeLineLayout>(this);
 }
 
 bool Device::config_surface(GLFWwindow* window)

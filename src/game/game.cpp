@@ -26,6 +26,13 @@ bool Game::init()
 	device_ = adapter_->get_device();
 	device_->config_surface(win_->window_);
 
+	// create device relative
+	pipe_line_layout_ = device_->create_pipe_line_layout();
+	bind_group_ = pipe_line_layout_->create_bind_group(sizeof(float)* 4); // to hold r, g, b, a
+
+	std::vector<float> color = {0.5, 0.5, 0.5, 1.0};
+	bind_group_->buffer_->write(sizeof(float) * color.size(), color.data());
+
 	world_ = std::make_shared<World>(this);
 	world_->init();
 
@@ -89,46 +96,20 @@ void Game::tick_logic()
 
 void Game::render()
 {
-	auto pipe_line = device_->create_render_pipe_line();
+	TriangleSet triangles;
+	triangles.add_rectangle(-1, -1, 2, 2);
+	render_triangles(triangles, 0.83, 0.92, 0.94, 1.0);
 
-	auto render_pass = device_->create_render_pass_command();
-	render_pass->begin(device_->get_surface_texture());
-
-	// render the objects here
-	render_pass->set_pipe_line(pipe_line);
-
-	render_world(render_pass);
-
-	render_pass->end();
-	render_pass->submit();
-
-//	render_world();
+	render_world();
 	render_lifes();
 }
 
 void Game::render_world()
 {
-	auto pipe_line = device_->create_render_pipe_line();
-
-	auto render_pass = device_->create_render_pass_command();
-	render_pass->begin(device_->get_surface_texture());
-
-	render_pass->set_pipe_line(pipe_line);
-
-	// get the triangles
 	TriangleSet triangles;
 	world_->render_self(triangles);
 
-	// do the triangles
-	size_t size = triangles.vertexs_.size() * sizeof(float);
-	auto buffer = device_->create_buffer(size);
-	buffer->write(size, triangles.vertexs_.data());
-
-	render_pass->set_vertex_buffer(0, buffer);
-	render_pass->draw(triangles.vertexs_.size()/2, 1);
-
-	render_pass->end();
-	render_pass->submit();
+	render_triangles(triangles, 0.7, 0.7, 0.7, 1.0);
 }
 
 void Game::render_lifes()
@@ -137,21 +118,25 @@ void Game::render_lifes()
 
 	world_->render_lifes(triangles);
 
-	render_triangles(triangles);
+	render_triangles(triangles, 0.0, 0.4, 1.0, 1.0);
 }
 
-void Game::render_triangles(TriangleSet& triangles, float r, float g, float b)
+void Game::render_triangles(TriangleSet& triangles, float r, float g, float b, float a)
 {
 	if (triangles.vertexs_.empty()) {
 		return;
 	}
+	// update the bind group
+	std::vector<float> color = { r, g, b, a };
+	bind_group_->buffer_->write(sizeof(float)*color.size(), color.data());
 
-	auto pipe_line = device_->create_render_pipe_line();
+	auto pipe_line = device_->create_render_pipe_line(pipe_line_layout_);
 
 	auto render_pass = device_->create_render_pass_command();
 	render_pass->begin(device_->get_surface_texture());
 
 	render_pass->set_pipe_line(pipe_line);
+	render_pass->set_bind_group(0, bind_group_);
 
 	// do the triangles
 	size_t size = triangles.vertexs_.size() * sizeof(float);

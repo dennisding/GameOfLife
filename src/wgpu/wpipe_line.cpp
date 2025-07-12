@@ -3,6 +3,7 @@
 #include "wdevice.hpp"
 
 static const char* shader_code = R"(
+@group(0) @binding(0) var<uniform> color : vec4f;
 @vertex
 fn vs_main(@location(0) in_vertex_position: vec2f) -> @builtin(position) vec4f {
 	return vec4f(in_vertex_position, 0.0, 1.0);
@@ -10,11 +11,24 @@ fn vs_main(@location(0) in_vertex_position: vec2f) -> @builtin(position) vec4f {
 
 @fragment
 fn fs_main() -> @location(0) vec4f {
-	return vec4f(0.0, 0.4, 1.0, 1.0);
+	return color;
 }
 )";
 
-PipeLine::PipeLine(Device* device) : device_(device)
+//	return vec4f(0.0, 0.4, 1.0, 1.0);
+
+PipeLine::PipeLine(Device* device) 
+	: device_(device), pipe_line_(nullptr)
+{
+}
+
+PipeLine::~PipeLine()
+{
+	wgpuRenderPipelineRelease(pipe_line_);
+	pipe_line_ = nullptr;
+}
+
+void PipeLine::create(Device* device, PipeLineLayoutPtr layout)
 {
 	// create the shader module
 	WGPUShaderModuleDescriptor shaderDesc{};
@@ -99,15 +113,9 @@ PipeLine::PipeLine(Device* device) : device_(device)
 	pipe_line_desc.multisample.mask = ~0u;
 	pipe_line_desc.multisample.alphaToCoverageEnabled = false;
 
-	pipe_line_desc.layout = nullptr;
+	pipe_line_desc.layout = layout->pipe_line_layout_;
 
 	pipe_line_ = wgpuDeviceCreateRenderPipeline(device_->device_, &pipe_line_desc);
 
 	wgpuShaderModuleRelease(shaderModule);
-}
-
-PipeLine::~PipeLine()
-{
-	wgpuRenderPipelineRelease(pipe_line_);
-	pipe_line_ = nullptr;
 }

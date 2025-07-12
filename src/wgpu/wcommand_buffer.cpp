@@ -79,7 +79,8 @@ void RenderPassCommand::begin(TexturePtr texture)
 	// setup color attachment
 	color_attachment.view = texture->get_texture_view();
 	color_attachment.resolveTarget = nullptr;
-	color_attachment.loadOp = WGPULoadOp_Clear;
+	color_attachment.loadOp = WGPULoadOp_Load;
+//	color_attachment.loadOp = WGPULoadOp_Clear;
 	color_attachment.storeOp = WGPUStoreOp_Store;
 	color_attachment.clearValue = WGPUColor{ 0.83, 0.92, 0.94, 1.0 };
 
@@ -102,6 +103,11 @@ void RenderPassCommand::set_vertex_buffer(size_t slot, BufferPtr buffer)
 {
 	size_t size = wgpuBufferGetSize(buffer->buffer_);
 	wgpuRenderPassEncoderSetVertexBuffer(render_pass_encoder_, slot, buffer->buffer_, 0, size);
+}
+
+void RenderPassCommand::set_bind_group(size_t slot, BindGroupPtr bind_group)
+{
+	wgpuRenderPassEncoderSetBindGroup(render_pass_encoder_, 0, bind_group->bind_group_, 0, nullptr);
 }
 
 void RenderPassCommand::draw(size_t vertex, size_t instance, size_t first_vertex, size_t first_instance)

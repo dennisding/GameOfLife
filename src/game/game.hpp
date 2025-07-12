@@ -9,6 +9,8 @@
 #include "wgpu/wadapter.hpp"
 #include "wgpu/wrender_pass.hpp"
 #include "wgpu/wcommand_buffer.hpp"
+#include "wgpu/wpipe_line_layout.hpp"
+#include "wgpu/wbind_group.hpp"
 
 #include <chrono>
 
@@ -33,7 +35,7 @@ private:
 	void render_world();
 	void render_lifes();
 	void render_world(RenderPassCommandPtr render_pass);
-	void render_triangles(TriangleSet& triangles, float r = 0., float g = 0., float b = 0.);
+	void render_triangles(TriangleSet& triangles, float r = 0.5, float g = 0.5, float b = 0.5, float a = 1.);
 
 public:
 	// use internal
@@ -45,4 +47,7 @@ public:
 	WorldPtr world_;
 	GuiPtr gui_;
 	TimeController time_controller_;
+
+	PipeLineLayoutPtr pipe_line_layout_;
+	BindGroupPtr bind_group_;
 };

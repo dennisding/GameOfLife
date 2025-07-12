@@ -12,6 +12,7 @@ public:
 	~Buffer();
 
 	void create(size_t size);
+	void create_uniform(size_t size);
 	void write(size_t size, void* data);
 
 private:

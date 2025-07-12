@@ -49,6 +49,7 @@ public:
 	void end();
 	void set_pipe_line(PipeLinePtr pipe_line);
 	void set_vertex_buffer(size_t slot, BufferPtr buffer);
+	void set_bind_group(size_t slot, BindGroupPtr bind_group);
 	void draw(size_t vertex, size_t instance = 0, size_t first_vertex = 0, size_t first_instance = 0);
 
 	void submit();

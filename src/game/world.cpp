@@ -43,10 +43,10 @@ void World::render(RenderPassCommandPtr render_pass)
 void World::render_self(TriangleSet& triangles)
 {
 	WinPtr win = game_->get_win();
-	float win_width = win->width();
-	float win_height = win->height();
+	float win_width = (float)win->width();
+	float win_height = (float)win->height();
 
-	float viewport_width = viewport_->width();
+	float viewport_width = (float)viewport_->width();
 	float xoffset = -viewport_width / 2;
 	float yoffset = -viewport_width / 2;
 
