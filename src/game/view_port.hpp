@@ -4,7 +4,6 @@
 #include <map>
 
 #include "config.hpp"
-#include "visual_life.hpp"
 #include "cosmos.hpp"
 
 class Viewport : std::enable_shared_from_this<Viewport>

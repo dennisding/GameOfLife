@@ -3,7 +3,6 @@ add_library(game STATIC
 	win.hpp	win.cpp
 	game.hpp game.cpp
 	world.hpp world.cpp
-	visual_life.hpp visual_life.cpp
 	gui.hpp gui.cpp
 	view_port.hpp view_port.cpp
 	geometry.hpp geometry.cpp
