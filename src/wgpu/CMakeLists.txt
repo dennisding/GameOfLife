@@ -5,7 +5,6 @@ add_library(wgpu STATIC
 	wcommand.hpp wcommand.cpp
 	wsurface.hpp wsurface.cpp
 	wtexture.hpp wtexture.cpp
-	wrender_pass.hpp wrender_pass.cpp
 	wpipe_line.hpp wpipe_line.cpp
 	wbuffer.hpp wbuffer.cpp
 	wpipe_line_layout.hpp wpipe_line_layout.cpp

@@ -7,7 +7,6 @@
 #include "rectangle.hpp"
 
 #include "wgpu/wadapter.hpp"
-#include "wgpu/wrender_pass.hpp"
 #include "wgpu/wcommand.hpp"
 #include "wgpu/wpipe_line_layout.hpp"
 #include "wgpu/wbind_group.hpp"

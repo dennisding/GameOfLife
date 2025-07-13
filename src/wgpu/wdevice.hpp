@@ -1,7 +1,6 @@
 #pragma once
 
 #include "wtexture.hpp"
-#include "wrender_pass.hpp"
 #include "wcommand.hpp"
 #include "wpipe_line.hpp"
 #include "wbuffer.hpp"
