@@ -3,7 +3,6 @@
 #include "win.hpp"
 #include "world.hpp"
 #include "gui.hpp"
-#include "time_controller.hpp"
 #include "geometry.hpp"
 
 #include "wgpu/wadapter.hpp"
@@ -54,8 +53,7 @@ public:
 	// logic
 	WorldPtr world_;
 	GuiPtr gui_;
-	TimeController time_controller_;
-
+	
 	PipeLineLayoutPtr pipe_line_layout_;
 	BindGroupPtr bind_group_;
 };
