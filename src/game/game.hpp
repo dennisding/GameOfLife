@@ -4,7 +4,7 @@
 #include "world.hpp"
 #include "gui.hpp"
 #include "time_controller.hpp"
-#include "rectangle.hpp"
+#include "geometry.hpp"
 
 #include "wgpu/wadapter.hpp"
 #include "wgpu/wcommand.hpp"

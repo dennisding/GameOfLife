@@ -1,5 +1,5 @@
 
-#include "rectangle.hpp"
+#include "geometry.hpp"
 
 void TriangleSet::add_rectangle(float x, float y, float xdelta, float ydelta)
 {

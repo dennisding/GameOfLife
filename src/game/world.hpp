@@ -3,7 +3,7 @@
 
 #include "cosmos.hpp"
 #include "view_port.hpp"
-#include "rectangle.hpp"
+#include "geometry.hpp"
 #include "wgpu/wcommand.hpp"
 
 #include <chrono>

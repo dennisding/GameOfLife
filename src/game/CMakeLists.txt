@@ -7,7 +7,7 @@ add_library(game STATIC
 	time_controller.hpp time_controller.cpp
 	gui.hpp gui.cpp
 	view_port.hpp view_port.cpp
-	rectangle.hpp rectangle.cpp
+	geometry.hpp geometry.cpp
 	color.hpp
 	input.hpp input.cpp
 	button.hpp button.cpp
