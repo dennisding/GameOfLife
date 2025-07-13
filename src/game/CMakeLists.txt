@@ -9,7 +9,6 @@ add_library(game STATIC
 	view_port.hpp view_port.cpp
 	rectangle.hpp rectangle.cpp
 	color.hpp
-	position.hpp position.cpp
 	input.hpp input.cpp
 	button.hpp button.cpp
 	render_set.hpp render_set.cpp

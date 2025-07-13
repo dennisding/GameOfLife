@@ -3,14 +3,14 @@
 #include <memory>
 #include <vector>
 
-#include "position.hpp"
+//#include "position.hpp"
 #include "color.hpp"
 
-struct Rectangle
-{
-	Position position_;
-	Color color_;
-};
+//struct Rectangle
+//{
+//	Position position_;
+//	Color color_;
+//};
 
 struct TriangleSet
 {
