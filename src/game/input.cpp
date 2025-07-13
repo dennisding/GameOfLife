@@ -7,8 +7,8 @@
 Input::Input(Win* win) 
 	: win_(win), cursor_x_(0), cursor_y_(0), scroll_x_(0), scroll_y_(0)
 {
-	mouse_button_left_ = KeyState::None;
-	mouse_button_right_ = KeyState::None;
+	mouse_button_left_ = KeyState::Released;
+	mouse_button_right_ = KeyState::Released;
 
 	glfwGetCursorPos(win_->window_, &cursor_x_, &cursor_y_);
 	cursor_y_ = win_->width() - cursor_y_;
@@ -21,7 +21,8 @@ void Input::pre_tick()
 	y = win_->height() - y; // 以左下角为原点对y进行修正.
 
 	int state = glfwGetMouseButton(win_->window_, GLFW_MOUSE_BUTTON_LEFT);
-	if (state == GLFW_PRESS) {
+//	if (state == GLFW_PRESS && mouse_button_left_ == KeyState::Released) {
+	if (mouse_button_left_ == KeyState::Released && state == GLFW_PRESS) {
 		mouse_button_left_ = KeyState::Pressed;
 		win_->game_->on_mouse_left_down(x, y);
 	}
@@ -29,6 +30,9 @@ void Input::pre_tick()
 		mouse_button_left_ = KeyState::Released;
 
 		bool consume = win_->game_->on_mouse_left_up(x, y);
+	}
+	else if (state == GLFW_PRESS) {
+		win_->game_->world_->add_life(x, y);
 	}
 
 	// process the right button

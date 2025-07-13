@@ -30,7 +30,7 @@ Gui::Gui(Game* game) : game_(game)
 	buttons_.push_back(button);
 	button->set_color(Color(0.91f, 1.0f, 0.81f), Color(0.98f, 0.89f, 0.54f), Color(0.58f, 0.88f, 0.82f));
 
-	// button 2 event
+	// button 3 event
 	button->on_click_event_ = [game]() {
 		game->world_->pause_evolve();
 		};

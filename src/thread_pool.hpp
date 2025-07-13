@@ -42,6 +42,9 @@ public:
 	void stop_all();
 
 private:
+	ThreadPtr create_thread(const std::string &name = "<unknow>");
+
+private:
 	bool terminate_;
 	std::atomic<int> tasks_ownership_;
 	TaskList tasks_;
