@@ -9,7 +9,7 @@ add_library(game STATIC
 	view_port.hpp view_port.cpp
 	game_system.hpp game_system.cpp
 	rectangle.hpp rectangle.cpp
-	color.hpp color.cpp
+	color.hpp
 	position.hpp position.cpp
 	input.hpp input.cpp
 	button.hpp button.cpp
