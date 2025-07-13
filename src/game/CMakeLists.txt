@@ -2,7 +2,6 @@
 add_library(game STATIC
 	win.hpp	win.cpp
 	game.hpp game.cpp
-	canvas.hpp canvas.cpp
 	world.hpp world.cpp
 	visual_life.hpp visual_life.cpp
 	time_controller.hpp time_controller.cpp
