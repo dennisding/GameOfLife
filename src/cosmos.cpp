@@ -167,8 +167,7 @@ void Cosmos::capture(LifeSet& lifes, i64 x, i64 y, int range)
 	}
 
 	i64 xindex = min_x;
-	//for (i64 xindex = min_x; xindex < max_x; ++xindex) {
-	while (xindex != (max_x + 1)) {
+	for (i64 xindex = min_x; xindex < max_x; ++xindex) {
 		Life life(xindex, min_y);
 		auto lower_bound = lifes_.lower_bound(&life);
 		while (lower_bound != lifes_.end()) {
