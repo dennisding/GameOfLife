@@ -3,7 +3,6 @@ add_library(wgpu STATIC
 	wadapter.hpp wadapter.cpp
 	wdevice.hpp wdevice.cpp
 	wcommand.hpp wcommand.cpp
-	wsurface.hpp wsurface.cpp
 	wtexture.hpp wtexture.cpp
 	wpipe_line.hpp wpipe_line.cpp
 	wbuffer.hpp wbuffer.cpp
