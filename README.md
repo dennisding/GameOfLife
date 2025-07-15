@@ -8,8 +8,8 @@
 4. cmake_build.cmd  (window下有效, 目前没在其它平台测试)
 5. 进入build目录, 打开GameOfLife.sln, 
 5. 直接进行编译, 其中, GameOfLife是面试题目的要求项目, GameOfLifeGui是基于webgpu的可视化版本, 
-	GameOfLifeLib是核心算法库, game是游戏引擎相关内容, wgpu是对glfw和webgup的封装,
-	glfw3webgpu, glfw和webgpu是三个第三方库.
+	GameOfLifeTest 是测试代码, 	GameOfLifeLib是核心算法库, game是游戏引擎相关内容, wgpu是对glfw和webgup的封装,
+	glfw3webgpu, glfw 和 webgpu 是三个第三方库.
 
 ## GameofLife 算法特点:
 1. 一次演化的时间复杂度是n*log(n), 其中的n是Life生命的数量, 这个应该是演化的最优解了.

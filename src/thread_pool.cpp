@@ -29,12 +29,13 @@ std::shared_ptr<std::thread> ThreadPool::create_thread(const std::string& name)
 			// get the tasks_ ownership
 			while (!tasks_ownership_.exchange(0, std::memory_order_acquire));
 
-			auto task_iter = tasks_.begin();
+			// fifo
+			auto task_iter = tasks_.rbegin();
 			TaskPtr task;
-			if (task_iter != tasks_.end()) {
+			if (task_iter != tasks_.rend()) {
 				// get the task
 				task = *task_iter;
-				tasks_.erase(task_iter);
+				tasks_.erase((++task_iter).base());
 			}
 			// free the tasks ownership
 			tasks_ownership_.exchange(1, std::memory_order_release);
